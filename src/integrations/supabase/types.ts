@@ -244,11 +244,18 @@ export type Database = {
           business_phone: string | null
           client_id: string
           created_at: string
+          escalation_manager_phone: string | null
+          escalation_timeout_minutes: number | null
           id: string
           logo_url: string | null
           notification_preferences: Json | null
           primary_color: string | null
+          quiet_hours_days: string[] | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
           secondary_color: string | null
+          service_address: string | null
+          service_radius_miles: number | null
           service_zip_codes: string[] | null
           updated_at: string
         }
@@ -259,11 +266,18 @@ export type Database = {
           business_phone?: string | null
           client_id: string
           created_at?: string
+          escalation_manager_phone?: string | null
+          escalation_timeout_minutes?: number | null
           id?: string
           logo_url?: string | null
           notification_preferences?: Json | null
           primary_color?: string | null
+          quiet_hours_days?: string[] | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
           secondary_color?: string | null
+          service_address?: string | null
+          service_radius_miles?: number | null
           service_zip_codes?: string[] | null
           updated_at?: string
         }
@@ -274,11 +288,18 @@ export type Database = {
           business_phone?: string | null
           client_id?: string
           created_at?: string
+          escalation_manager_phone?: string | null
+          escalation_timeout_minutes?: number | null
           id?: string
           logo_url?: string | null
           notification_preferences?: Json | null
           primary_color?: string | null
+          quiet_hours_days?: string[] | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
           secondary_color?: string | null
+          service_address?: string | null
+          service_radius_miles?: number | null
           service_zip_codes?: string[] | null
           updated_at?: string
         }
