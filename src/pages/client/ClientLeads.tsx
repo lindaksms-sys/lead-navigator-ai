@@ -33,7 +33,7 @@ export default function ClientLeads() {
   };
 
   const updateStatus = async (leadId: string, status: string) => {
-    await supabase.from("leads").update({ status }).eq("id", leadId);
+    await supabase.from("leads").update({ status: status as any }).eq("id", leadId);
     setLeads((prev) => prev.map((l) => l.id === leadId ? { ...l, status } : l));
     toast.success("Status updated");
   };
