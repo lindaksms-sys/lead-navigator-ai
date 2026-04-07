@@ -182,7 +182,7 @@ export default function ClientSettings() {
   };
 
   const updateMemberRole = async (roleId: string, newRole: string) => {
-    const { error } = await supabase.from("user_roles").update({ role: newRole }).eq("id", roleId);
+    const { error } = await supabase.from("user_roles").update({ role: newRole as any }).eq("id", roleId);
     if (error) toast.error(error.message);
     else { toast.success("Role updated"); loadAll(); }
   };
