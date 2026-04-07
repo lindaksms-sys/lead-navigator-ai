@@ -92,6 +92,9 @@ export default function LeadsDashboard() {
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings/notifications")}>
               <Settings className="h-4 w-4" />
             </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings/scheduling")}>
+              <Calendar className="h-4 w-4" />
+            </Button>
             <Button onClick={() => navigate("/leads/new")}>
               <Plus className="h-4 w-4 mr-1" /> New Lead
             </Button>
