@@ -16,6 +16,9 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
+          calendar_link: string | null
+          calendly_event_id: string | null
+          calendly_invitee_uri: string | null
           created_at: string
           datetime: string
           id: string
@@ -25,6 +28,9 @@ export type Database = {
           status: Database["public"]["Enums"]["appointment_status"]
         }
         Insert: {
+          calendar_link?: string | null
+          calendly_event_id?: string | null
+          calendly_invitee_uri?: string | null
           created_at?: string
           datetime: string
           id?: string
@@ -34,6 +40,9 @@ export type Database = {
           status?: Database["public"]["Enums"]["appointment_status"]
         }
         Update: {
+          calendar_link?: string | null
+          calendly_event_id?: string | null
+          calendly_invitee_uri?: string | null
           created_at?: string
           datetime?: string
           id?: string
@@ -120,6 +129,36 @@ export type Database = {
           id?: string
           notes?: string | null
           reason?: Database["public"]["Enums"]["escalation_reason"]
+        }
+        Relationships: []
+      }
+      integrations: {
+        Row: {
+          access_token: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          provider: string
+          settings: Json | null
+          updated_at: string
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          provider: string
+          settings?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          provider?: string
+          settings?: Json | null
+          updated_at?: string
         }
         Relationships: []
       }
