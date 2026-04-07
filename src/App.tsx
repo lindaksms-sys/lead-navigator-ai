@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import LeadsDashboard from "./pages/LeadsDashboard.tsx";
 import LeadIntake from "./pages/LeadIntake.tsx";
+import NotificationSettings from "./pages/NotificationSettings.tsx";
 
 const queryClient = new QueryClient();
 
