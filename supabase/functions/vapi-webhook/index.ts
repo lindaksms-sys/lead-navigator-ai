@@ -116,6 +116,49 @@ Deno.serve(async (req) => {
           }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
 
+        // Send SMS for Hot leads
+        if (category === "Hot") {
+          try {
+            const { data: settingsData } = await supabase
+              .from("settings")
+              .select("key, value")
+              .in("key", ["sms_alerts_enabled", "sales_rep_phone"]);
+
+            const smsEnabled = settingsData?.find((s: any) => s.key === "sms_alerts_enabled")?.value === "true";
+            const salesPhone = settingsData?.find((s: any) => s.key === "sales_rep_phone")?.value;
+
+            if (smsEnabled && salesPhone) {
+              const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+              const TWILIO_API_KEY = Deno.env.get("TWILIO_API_KEY");
+              const TWILIO_PHONE_NUMBER = Deno.env.get("TWILIO_PHONE_NUMBER");
+
+              if (LOVABLE_API_KEY && TWILIO_API_KEY && TWILIO_PHONE_NUMBER) {
+                const smsBody = `🔥 HOT LEAD: ${leadData.name} needs ${leadData.serviceType || "service"} ${leadData.timeline || "soon"}. Score: ${score}/100. Call: ${leadData.phone}.`;
+
+                const smsResponse = await fetch("https://connector-gateway.lovable.dev/twilio/Messages.json", {
+                  method: "POST",
+                  headers: {
+                    "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+                    "X-Connection-Api-Key": TWILIO_API_KEY,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                  body: new URLSearchParams({ To: salesPhone, From: TWILIO_PHONE_NUMBER, Body: smsBody }),
+                });
+
+                const smsData = await smsResponse.json();
+                await supabase.from("sms_logs").insert({
+                  phone_sent_to: salesPhone,
+                  content: smsBody,
+                  status: smsResponse.ok ? "sent" : "failed",
+                  twilio_sid: smsData.sid || null,
+                });
+              }
+            }
+          } catch (smsErr) {
+            console.error("SMS alert failed (non-fatal):", smsErr);
+          }
+        }
+
         return new Response(JSON.stringify({
           results: [{
             toolCallId: functionCall.id,

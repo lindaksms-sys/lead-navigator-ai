@@ -77,9 +77,25 @@ export default function LeadsDashboard() {
             <h1 className="text-2xl font-bold text-foreground">Lead Dashboard</h1>
             <p className="text-muted-foreground text-sm">{leads.length} total leads</p>
           </div>
-          <Button onClick={() => navigate("/leads/new")}>
-            <Plus className="h-4 w-4 mr-1" /> New Lead
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="relative" onClick={() => {
+              setHotCount(0);
+              if (Notification.permission !== "granted") Notification.requestPermission();
+            }}>
+              <Bell className="h-4 w-4" />
+              {hotCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px]">
+                  {hotCount}
+                </Badge>
+              )}
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings/notifications")}>
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button onClick={() => navigate("/leads/new")}>
+              <Plus className="h-4 w-4 mr-1" /> New Lead
+            </Button>
+          </div>
         </div>
 
         {/* Kanban */}

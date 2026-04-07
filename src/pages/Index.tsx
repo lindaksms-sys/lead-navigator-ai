@@ -24,6 +24,9 @@ export default function Index() {
           <Button size="lg" variant="outline" onClick={() => navigate("/leads/new")}>
             <Zap className="h-4 w-4 mr-2" /> New Lead
           </Button>
+          <Button size="lg" variant="ghost" onClick={() => navigate("/settings/notifications")}>
+            <Settings className="h-4 w-4 mr-2" /> Settings
+          </Button>
         </div>
       </div>
     </div>
