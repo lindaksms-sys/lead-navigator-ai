@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BarChart3, Phone, Zap } from "lucide-react";
+import { BarChart3, Phone, Zap, Settings } from "lucide-react";
 
 export default function Index() {
   const navigate = useNavigate();
