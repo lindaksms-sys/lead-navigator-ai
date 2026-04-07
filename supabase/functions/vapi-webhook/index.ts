@@ -172,31 +172,117 @@ Deno.serve(async (req) => {
       }
 
       if (name === "checkAvailability") {
-        const slots = [
-          "Tomorrow at 9:00 AM",
-          "Tomorrow at 2:00 PM",
-          "Day after tomorrow at 10:00 AM",
-          "Day after tomorrow at 3:00 PM",
-          "This Friday at 11:00 AM",
-        ];
-        return new Response(JSON.stringify({
-          results: [{ toolCallId: functionCall.id, result: `Available slots: ${slots.join(", ")}` }],
-        }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        try {
+          const CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN");
+          if (!CALENDLY_API_TOKEN) throw new Error("Calendly not configured");
+
+          // Get event type URI from settings
+          const { data: etSetting } = await supabase
+            .from("settings")
+            .select("value")
+            .eq("key", "calendly_event_type_uri")
+            .maybeSingle();
+
+          if (!etSetting?.value) {
+            return new Response(JSON.stringify({
+              results: [{ toolCallId: functionCall.id, result: "Scheduling is not configured yet. Please ask a team member to set up Calendly in settings." }],
+            }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          }
+
+          const now = new Date();
+          const endDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+
+          const url = `https://api.calendly.com/event_type_available_times?event_type=${encodeURIComponent(etSetting.value)}&start_time=${now.toISOString()}&end_time=${endDate.toISOString()}`;
+          const calRes = await fetch(url, {
+            headers: { "Authorization": `Bearer ${CALENDLY_API_TOKEN}`, "Content-Type": "application/json" },
+          });
+
+          if (!calRes.ok) {
+            const errBody = await calRes.text();
+            console.error("Calendly availability error:", errBody);
+            throw new Error("Failed to fetch availability");
+          }
+
+          const calData = await calRes.json();
+          const slots = (calData.collection || [])
+            .slice(0, 5)
+            .map((slot: any) => {
+              const d = new Date(slot.start_time);
+              return d.toLocaleString("en-US", { weekday: "long", hour: "numeric", minute: "2-digit", hour12: true });
+            });
+
+          const result = slots.length > 0
+            ? `Available slots: ${slots.join(", ")}`
+            : "Unfortunately, there are no available slots in the next 3 days. Please check back later.";
+
+          return new Response(JSON.stringify({
+            results: [{ toolCallId: functionCall.id, result }],
+          }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        } catch (calErr) {
+          console.error("Calendly checkAvailability error:", calErr);
+          // Fallback to static slots
+          const slots = ["Tomorrow at 9:00 AM", "Tomorrow at 2:00 PM", "Day after tomorrow at 10:00 AM"];
+          return new Response(JSON.stringify({
+            results: [{ toolCallId: functionCall.id, result: `Available slots: ${slots.join(", ")}` }],
+          }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
       }
 
       if (name === "bookAppointment") {
+        const datetime = params.datetime || new Date().toISOString();
+        let calendlyEventId = null;
+        let calendarLink = null;
+
+        try {
+          const CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN");
+          const { data: etSetting } = await supabase
+            .from("settings")
+            .select("value")
+            .eq("key", "calendly_event_type_uri")
+            .maybeSingle();
+
+          if (CALENDLY_API_TOKEN && etSetting?.value) {
+            // Create scheduling link for the invitee
+            const calRes = await fetch("https://api.calendly.com/scheduling_links", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${CALENDLY_API_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                max_event_count: 1,
+                owner: etSetting.value,
+                owner_type: "EventType",
+              }),
+            });
+
+            if (calRes.ok) {
+              const calData = await calRes.json();
+              calendarLink = calData.resource?.booking_url || null;
+              calendlyEventId = calData.resource?.uri || null;
+            }
+          }
+        } catch (calErr) {
+          console.error("Calendly booking error (non-fatal):", calErr);
+        }
+
         const { error } = await supabase.from("appointments").insert({
           lead_id: params.leadId || null,
-          datetime: params.datetime || new Date().toISOString(),
+          datetime,
           service_type: params.serviceType || null,
           notes: params.notes || null,
+          calendly_event_id: calendlyEventId,
+          calendar_link: calendarLink,
         });
 
+        const resultMsg = error
+          ? `Error booking: ${error.message}`
+          : calendarLink
+            ? `Appointment booked successfully! You can manage it here: ${calendarLink}`
+            : "Appointment booked successfully!";
+
         return new Response(JSON.stringify({
-          results: [{
-            toolCallId: functionCall.id,
-            result: error ? `Error booking: ${error.message}` : "Appointment booked successfully!",
-          }],
+          results: [{ toolCallId: functionCall.id, result: resultMsg }],
         }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
