@@ -19,6 +19,7 @@ export type Database = {
           calendar_link: string | null
           calendly_event_id: string | null
           calendly_invitee_uri: string | null
+          client_id: string | null
           created_at: string
           datetime: string
           id: string
@@ -31,6 +32,7 @@ export type Database = {
           calendar_link?: string | null
           calendly_event_id?: string | null
           calendly_invitee_uri?: string | null
+          client_id?: string | null
           created_at?: string
           datetime: string
           id?: string
@@ -43,6 +45,7 @@ export type Database = {
           calendar_link?: string | null
           calendly_event_id?: string | null
           calendly_invitee_uri?: string | null
+          client_id?: string | null
           created_at?: string
           datetime?: string
           id?: string
@@ -52,6 +55,13 @@ export type Database = {
           status?: Database["public"]["Enums"]["appointment_status"]
         }
         Relationships: [
+          {
+            foreignKeyName: "appointments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "appointments_lead_id_fkey"
             columns: ["lead_id"]
@@ -64,6 +74,7 @@ export type Database = {
       calls: {
         Row: {
           call_sid: string
+          client_id: string | null
           created_at: string
           direction: Database["public"]["Enums"]["call_direction"] | null
           duration_seconds: number | null
@@ -75,6 +86,7 @@ export type Database = {
         }
         Insert: {
           call_sid: string
+          client_id?: string | null
           created_at?: string
           direction?: Database["public"]["Enums"]["call_direction"] | null
           duration_seconds?: number | null
@@ -86,6 +98,7 @@ export type Database = {
         }
         Update: {
           call_sid?: string
+          client_id?: string | null
           created_at?: string
           direction?: Database["public"]["Enums"]["call_direction"] | null
           duration_seconds?: number | null
@@ -97,6 +110,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "calls_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "calls_lead_id_fkey"
             columns: ["lead_id"]
             isOneToOne: false
@@ -105,9 +125,119 @@ export type Database = {
           },
         ]
       }
+      client_activity_log: {
+        Row: {
+          activity_type: string
+          client_id: string
+          created_at: string
+          description: string
+          id: string
+        }
+        Insert: {
+          activity_type: string
+          client_id: string
+          created_at?: string
+          description: string
+          id?: string
+        }
+        Update: {
+          activity_type?: string
+          client_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_activity_log_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_settings: {
+        Row: {
+          business_address: string | null
+          business_hours: Json | null
+          business_name: string | null
+          business_phone: string | null
+          client_id: string
+          created_at: string
+          id: string
+          logo_url: string | null
+          notification_preferences: Json | null
+          primary_color: string | null
+          secondary_color: string | null
+          service_zip_codes: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          business_address?: string | null
+          business_hours?: Json | null
+          business_name?: string | null
+          business_phone?: string | null
+          client_id: string
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          notification_preferences?: Json | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          service_zip_codes?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          business_address?: string | null
+          business_hours?: Json | null
+          business_name?: string | null
+          business_phone?: string | null
+          client_id?: string
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          notification_preferences?: Json | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          service_zip_codes?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_settings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       escalations: {
         Row: {
           call_sid: string
+          client_id: string | null
           created_at: string
           handled: boolean | null
           id: string
@@ -116,6 +246,7 @@ export type Database = {
         }
         Insert: {
           call_sid: string
+          client_id?: string | null
           created_at?: string
           handled?: boolean | null
           id?: string
@@ -124,13 +255,22 @@ export type Database = {
         }
         Update: {
           call_sid?: string
+          client_id?: string | null
           created_at?: string
           handled?: boolean | null
           id?: string
           notes?: string | null
           reason?: Database["public"]["Enums"]["escalation_reason"]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "escalations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       integrations: {
         Row: {
@@ -168,6 +308,7 @@ export type Database = {
           budget: Database["public"]["Enums"]["budget_type"] | null
           call_sid: string | null
           category: Database["public"]["Enums"]["lead_category"]
+          client_id: string | null
           created_at: string
           decision_maker: boolean | null
           email: string | null
@@ -189,6 +330,7 @@ export type Database = {
           budget?: Database["public"]["Enums"]["budget_type"] | null
           call_sid?: string | null
           category?: Database["public"]["Enums"]["lead_category"]
+          client_id?: string | null
           created_at?: string
           decision_maker?: boolean | null
           email?: string | null
@@ -210,6 +352,7 @@ export type Database = {
           budget?: Database["public"]["Enums"]["budget_type"] | null
           call_sid?: string | null
           category?: Database["public"]["Enums"]["lead_category"]
+          client_id?: string | null
           created_at?: string
           decision_maker?: boolean | null
           email?: string | null
@@ -225,6 +368,41 @@ export type Database = {
           status?: Database["public"]["Enums"]["lead_status"]
           timeline?: Database["public"]["Enums"]["timeline_type"] | null
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -287,14 +465,54 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_client_id: { Args: { _user_id: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin" | "client_admin" | "client_viewer"
       appointment_status:
         | "scheduled"
         | "confirmed"
@@ -459,6 +677,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "client_admin", "client_viewer"],
       appointment_status: [
         "scheduled",
         "confirmed",
