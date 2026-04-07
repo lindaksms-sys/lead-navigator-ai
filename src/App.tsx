@@ -19,6 +19,9 @@ import ClientLeads from "./pages/client/ClientLeads.tsx";
 import ClientCalls from "./pages/client/ClientCalls.tsx";
 import ClientAppointments from "./pages/client/ClientAppointments.tsx";
 import ClientSettingsPage from "./pages/client/ClientSettingsPage.tsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
+import AdminAgencies from "./pages/admin/AdminAgencies.tsx";
+import AdminBilling from "./pages/admin/AdminBilling.tsx";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +51,11 @@ const App = () => (
             <Route path="/client/calls" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientCalls /></ProtectedRoute>} />
             <Route path="/client/appointments" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientAppointments /></ProtectedRoute>} />
             <Route path="/client/settings" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientSettingsPage /></ProtectedRoute>} />
+
+            {/* Super admin routes */}
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/agencies" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminAgencies /></ProtectedRoute>} />
+            <Route path="/admin/billing" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminBilling /></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
