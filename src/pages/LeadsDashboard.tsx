@@ -35,8 +35,14 @@ export default function LeadsDashboard() {
 
     const channel = supabase
       .channel("leads-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
+      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, (payload) => {
         fetchLeads();
+        if (payload.eventType === "INSERT" && (payload.new as Lead).category === "Hot") {
+          setHotCount((c) => c + 1);
+          if (Notification.permission === "granted") {
+            new Notification("🔥 New Hot Lead!", { body: `${(payload.new as Lead).name} - Score: ${(payload.new as Lead).score}` });
+          }
+        }
       })
       .subscribe();
 
