@@ -4,7 +4,7 @@ import { LeadCard } from "@/components/leads/LeadCard";
 import { LeadDetail } from "@/components/leads/LeadDetail";
 import { AutomationRules } from "@/components/leads/AutomationRules";
 import { Button } from "@/components/ui/button";
-import { Plus, Bell, Settings } from "lucide-react";
+import { Plus, Bell, Settings, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -91,6 +91,9 @@ export default function LeadsDashboard() {
             </Button>
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings/notifications")}>
               <Settings className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings/scheduling")}>
+              <Calendar className="h-4 w-4" />
             </Button>
             <Button onClick={() => navigate("/leads/new")}>
               <Plus className="h-4 w-4 mr-1" /> New Lead

@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import LeadsDashboard from "./pages/LeadsDashboard.tsx";
 import LeadIntake from "./pages/LeadIntake.tsx";
 import NotificationSettings from "./pages/NotificationSettings.tsx";
+import SchedulingSettings from "./pages/SchedulingSettings.tsx";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/leads" element={<LeadsDashboard />} />
           <Route path="/leads/new" element={<LeadIntake />} />
           <Route path="/settings/notifications" element={<NotificationSettings />} />
+          <Route path="/settings/scheduling" element={<SchedulingSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

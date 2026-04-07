@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Phone, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { SchedulePopover } from "@/components/leads/SchedulePopover";
 import type { Database } from "@/integrations/supabase/types";
 
 type Lead = Database["public"]["Tables"]["leads"]["Row"];
@@ -31,7 +32,10 @@ export function LeadCard({ lead, onClick }: LeadCardProps) {
     >
       <div className="flex items-start justify-between mb-2">
         <h4 className="font-semibold text-foreground text-sm truncate">{lead.name}</h4>
-        <Badge className={scoreBadgeClass(lead.category)}>{lead.score}</Badge>
+        <div className="flex items-center gap-1">
+          <SchedulePopover lead={lead} />
+          <Badge className={scoreBadgeClass(lead.category)}>{lead.score}</Badge>
+        </div>
       </div>
       <div className="space-y-1 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
