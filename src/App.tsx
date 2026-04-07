@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import LeadsDashboard from "./pages/LeadsDashboard.tsx";
 import LeadIntake from "./pages/LeadIntake.tsx";
+import NotificationSettings from "./pages/NotificationSettings.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/leads" element={<LeadsDashboard />} />
           <Route path="/leads/new" element={<LeadIntake />} />
+          <Route path="/settings/notifications" element={<NotificationSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

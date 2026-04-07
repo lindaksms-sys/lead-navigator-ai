@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BarChart3, Phone, Zap } from "lucide-react";
+import { BarChart3, Phone, Zap, Settings } from "lucide-react";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -23,6 +23,9 @@ export default function Index() {
           </Button>
           <Button size="lg" variant="outline" onClick={() => navigate("/leads/new")}>
             <Zap className="h-4 w-4 mr-2" /> New Lead
+          </Button>
+          <Button size="lg" variant="ghost" onClick={() => navigate("/settings/notifications")}>
+            <Settings className="h-4 w-4 mr-2" /> Settings
           </Button>
         </div>
       </div>

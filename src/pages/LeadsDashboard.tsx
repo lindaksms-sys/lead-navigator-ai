@@ -4,7 +4,8 @@ import { LeadCard } from "@/components/leads/LeadCard";
 import { LeadDetail } from "@/components/leads/LeadDetail";
 import { AutomationRules } from "@/components/leads/AutomationRules";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Bell, Settings } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import type { Database } from "@/integrations/supabase/types";
@@ -22,6 +23,7 @@ const columnColors: Record<Category, string> = {
 export default function LeadsDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [hotCount, setHotCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,8 +35,14 @@ export default function LeadsDashboard() {
 
     const channel = supabase
       .channel("leads-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
+      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, (payload) => {
         fetchLeads();
+        if (payload.eventType === "INSERT" && (payload.new as Lead).category === "Hot") {
+          setHotCount((c) => c + 1);
+          if (Notification.permission === "granted") {
+            new Notification("🔥 New Hot Lead!", { body: `${(payload.new as Lead).name} - Score: ${(payload.new as Lead).score}` });
+          }
+        }
       })
       .subscribe();
 
@@ -69,9 +77,25 @@ export default function LeadsDashboard() {
             <h1 className="text-2xl font-bold text-foreground">Lead Dashboard</h1>
             <p className="text-muted-foreground text-sm">{leads.length} total leads</p>
           </div>
-          <Button onClick={() => navigate("/leads/new")}>
-            <Plus className="h-4 w-4 mr-1" /> New Lead
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="relative" onClick={() => {
+              setHotCount(0);
+              if (Notification.permission !== "granted") Notification.requestPermission();
+            }}>
+              <Bell className="h-4 w-4" />
+              {hotCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-[10px]">
+                  {hotCount}
+                </Badge>
+              )}
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings/notifications")}>
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button onClick={() => navigate("/leads/new")}>
+              <Plus className="h-4 w-4 mr-1" /> New Lead
+            </Button>
+          </div>
         </div>
 
         {/* Kanban */}
