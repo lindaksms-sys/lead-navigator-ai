@@ -23,6 +23,7 @@ const columnColors: Record<Category, string> = {
 export default function LeadsDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [hotCount, setHotCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
