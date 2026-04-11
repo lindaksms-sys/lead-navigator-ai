@@ -1,17 +1,20 @@
 import { ClientLayout } from "@/components/client/ClientLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreditCard, Calendar, Clock, MapPin, AlertTriangle, ExternalLink, Check } from "lucide-react";
+import { CreditCard, Clock, MapPin, AlertTriangle, ExternalLink } from "lucide-react";
 import { useBilling } from "@/hooks/useBilling";
+import { usePayPalConfig } from "@/hooks/usePayPalConfig";
 import { PlanCard } from "@/components/billing/PlanCard";
+import { PayPalSubscriptionButton } from "@/components/billing/PayPalSubscriptionButton";
 import { BILLING_PLANS, getPlan } from "@/lib/billingPlans";
 import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; label: string }> = {
@@ -27,12 +30,24 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function ClientBilling() {
   const { billing, plan, isLoading, isTrialing, minutesUsed, minutesLimit, minutesPercent, locationsLimit } = useBilling();
+  const { data: ppConfig } = usePayPalConfig();
+  const queryClient = useQueryClient();
   const [showPlans, setShowPlans] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
 
   const handleSelectPlan = (planId: string) => {
-    // PayPal checkout placeholder
-    toast.info(`PayPal checkout for ${getPlan(planId).name} plan would start here. Integration coming soon.`);
+    const p = getPlan(planId);
+    if (!p.isSelfServe) {
+      window.open("mailto:sales@receptionistai.pro", "_blank");
+      return;
+    }
+    setSelectedPlanId(planId);
+  };
+
+  const handleCheckoutSuccess = () => {
+    setSelectedPlanId(null);
     setShowPlans(false);
+    queryClient.invalidateQueries({ queryKey: ["billing-subscription"] });
   };
 
   if (isLoading) {
@@ -47,6 +62,8 @@ export default function ClientBilling() {
 
   const currentPlanId = billing?.plan_id || "starter";
   const subscriptionStatus = billing?.subscription_status || "trialing";
+  const selectedPlan = selectedPlanId ? getPlan(selectedPlanId) : null;
+  const paypalPlanIdForSelected = selectedPlanId && ppConfig?.plans ? ppConfig.plans[selectedPlanId] : "";
 
   return (
     <ClientLayout>
@@ -73,7 +90,7 @@ export default function ClientBilling() {
           </Card>
         )}
 
-        {/* Current plan card */}
+        {/* Current plan + Usage */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card>
             <CardHeader className="pb-3">
@@ -110,7 +127,7 @@ export default function ClientBilling() {
                 </div>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button variant="outline" size="sm" className="flex-1" onClick={() => setShowPlans(true)}>
+                <Button variant="outline" size="sm" className="flex-1" onClick={() => { setSelectedPlanId(null); setShowPlans(true); }}>
                   Change plan
                 </Button>
                 <Button variant="outline" size="sm" className="flex-1" onClick={() => toast.info("Cancel flow coming soon")}>
@@ -120,7 +137,6 @@ export default function ClientBilling() {
             </CardContent>
           </Card>
 
-          {/* Usage card */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
@@ -160,7 +176,7 @@ export default function ClientBilling() {
           </Card>
         </div>
 
-        {/* Billing support */}
+        {/* Support */}
         <Card>
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center justify-between">
@@ -175,26 +191,61 @@ export default function ClientBilling() {
           </CardContent>
         </Card>
 
-        {/* Plan comparison dialog */}
-        <Dialog open={showPlans} onOpenChange={setShowPlans}>
+        {/* Plan selection + PayPal checkout dialog */}
+        <Dialog open={showPlans} onOpenChange={(open) => { setShowPlans(open); if (!open) setSelectedPlanId(null); }}>
           <DialogContent className="max-w-3xl">
             <DialogHeader>
-              <DialogTitle>Choose your plan</DialogTitle>
+              <DialogTitle>{selectedPlan ? `Subscribe to ${selectedPlan.name}` : "Choose your plan"}</DialogTitle>
             </DialogHeader>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
-              {Object.values(BILLING_PLANS).map((p) => (
-                <PlanCard
-                  key={p.id}
-                  plan={p}
-                  isCurrent={p.id === currentPlanId}
-                  onSelect={handleSelectPlan}
-                  isUpgrade={
-                    (currentPlanId === "starter" && p.id === "growth") ||
-                    (currentPlanId === "starter" && p.id === "agency")
-                  }
-                />
-              ))}
-            </div>
+
+            {selectedPlanId && selectedPlan ? (
+              <div className="space-y-4 mt-2">
+                <div className="rounded-lg border bg-muted/30 p-4">
+                  <div className="flex items-baseline justify-between mb-2">
+                    <span className="text-lg font-semibold">{selectedPlan.name}</span>
+                    <span className="text-xl font-bold">{selectedPlan.priceLabel}</span>
+                  </div>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    {selectedPlan.features.slice(0, 3).map((f) => (
+                      <li key={f}>• {f}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {ppConfig?.client_id && paypalPlanIdForSelected ? (
+                  <PayPalSubscriptionButton
+                    planId={selectedPlanId}
+                    paypalPlanId={paypalPlanIdForSelected}
+                    paypalClientId={ppConfig.client_id}
+                    onSuccess={handleCheckoutSuccess}
+                    onCancel={() => setSelectedPlanId(null)}
+                  />
+                ) : (
+                  <div className="text-center py-6 text-sm text-muted-foreground">
+                    Loading payment options…
+                  </div>
+                )}
+
+                <Button variant="ghost" size="sm" className="w-full" onClick={() => setSelectedPlanId(null)}>
+                  ← Back to plans
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+                {Object.values(BILLING_PLANS).map((p) => (
+                  <PlanCard
+                    key={p.id}
+                    plan={p}
+                    isCurrent={p.id === currentPlanId}
+                    onSelect={handleSelectPlan}
+                    isUpgrade={
+                      (currentPlanId === "starter" && p.id === "growth") ||
+                      (currentPlanId === "starter" && p.id === "agency")
+                    }
+                  />
+                ))}
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>
