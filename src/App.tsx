@@ -24,6 +24,8 @@ import ClientSettingsPage from "./pages/client/ClientSettingsPage.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminAgencies from "./pages/admin/AdminAgencies.tsx";
 import AdminBilling from "./pages/admin/AdminBilling.tsx";
+import AdminEventLogs from "./pages/admin/AdminEventLogs.tsx";
+import ClientActivityLog from "./pages/client/ClientActivityLog.tsx";
 
 const queryClient = new QueryClient();
 
