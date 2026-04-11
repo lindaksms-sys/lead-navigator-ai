@@ -168,6 +168,25 @@ const Onboarding = () => {
       if (defaults.services.length) set("services", defaults.services);
       if (defaults.qualificationQuestions.length) set("qualificationQuestions", defaults.qualificationQuestions);
       if (defaults.description) set("businessDescription", defaults.description);
+      // Prefill scheduling defaults
+      if (defaults.schedulingDefaults) {
+        set("appointmentTypes", defaults.schedulingDefaults.appointmentTypes);
+        set("appointmentDuration", defaults.schedulingDefaults.defaultDuration);
+        set("bufferTime", defaults.schedulingDefaults.bufferTime);
+        if (defaults.schedulingDefaults.bookingNotes) set("bookingNotes", defaults.schedulingDefaults.bookingNotes);
+      }
+      // Prefill knowledge base
+      if (defaults.knowledgeBase) {
+        if (defaults.knowledgeBase.faqs) set("faqs", defaults.knowledgeBase.faqs);
+        if (defaults.knowledgeBase.serviceNotes) set("serviceNotes", defaults.knowledgeBase.serviceNotes);
+        if (defaults.knowledgeBase.pricingGuidance) set("pricingGuidance", defaults.knowledgeBase.pricingGuidance);
+        if (defaults.knowledgeBase.policies) set("policies", defaults.knowledgeBase.policies);
+      }
+      // Prefill emergency behavior
+      if (defaults.behaviorDefaults) {
+        set("emergencyCallsEnabled", defaults.behaviorDefaults.escalateAfterHoursEmergency);
+        set("emergencyServices", defaults.behaviorDefaults.prioritizeUrgent);
+      }
     }
   };
 
