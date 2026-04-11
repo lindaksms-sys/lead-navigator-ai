@@ -32,6 +32,7 @@ import {
   Users,
   X,
   Plus,
+  FlaskConical,
 } from "lucide-react";
 import { industryDefaults } from "@/lib/industryDefaults";
 
