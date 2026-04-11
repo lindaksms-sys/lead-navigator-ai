@@ -1,4 +1,4 @@
-import { LayoutDashboard, Phone, Users, CalendarDays, Settings, LogOut, ScrollText } from "lucide-react";
+import { LayoutDashboard, Phone, Users, CalendarDays, Settings, LogOut, ScrollText, Sparkles } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ const navItems = [
   { title: "Calls", url: "/client/calls", icon: Phone },
   { title: "Appointments", url: "/client/appointments", icon: CalendarDays },
   { title: "Activity", url: "/client/activity", icon: ScrollText },
+  { title: "Template", url: "/client/template", icon: Sparkles },
   { title: "Settings", url: "/client/settings", icon: Settings },
 ];
 
