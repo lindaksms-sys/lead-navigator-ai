@@ -56,12 +56,14 @@ const App = () => (
             <Route path="/client/leads" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientLeads /></ProtectedRoute>} />
             <Route path="/client/calls" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientCalls /></ProtectedRoute>} />
             <Route path="/client/appointments" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientAppointments /></ProtectedRoute>} />
+            <Route path="/client/activity" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientActivityLog /></ProtectedRoute>} />
             <Route path="/client/settings" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientSettingsPage /></ProtectedRoute>} />
 
             {/* Super admin routes */}
             <Route path="/admin" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
             <Route path="/admin/agencies" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminAgencies /></ProtectedRoute>} />
             <Route path="/admin/billing" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminBilling /></ProtectedRoute>} />
+            <Route path="/admin/logs" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminEventLogs /></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
