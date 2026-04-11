@@ -26,6 +26,7 @@ import AdminAgencies from "./pages/admin/AdminAgencies.tsx";
 import AdminBilling from "./pages/admin/AdminBilling.tsx";
 import AdminEventLogs from "./pages/admin/AdminEventLogs.tsx";
 import ClientActivityLog from "./pages/client/ClientActivityLog.tsx";
+import ClientTemplatePage from "./pages/client/ClientTemplatePage.tsx";
 
 const queryClient = new QueryClient();
 
