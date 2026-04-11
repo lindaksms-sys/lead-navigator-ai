@@ -150,6 +150,80 @@ export type Database = {
           },
         ]
       }
+      billing_subscriptions: {
+        Row: {
+          billing_email: string | null
+          cancel_at_period_end: boolean
+          client_id: string
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          last_payment_status: string | null
+          max_locations: number
+          max_minutes: number
+          payment_provider: string
+          plan_id: string
+          provider_customer_id: string | null
+          provider_subscription_id: string | null
+          subscription_status: string
+          trial_end: string | null
+          updated_at: string
+          usage_minutes_current_period: number
+          usage_reset_at: string | null
+        }
+        Insert: {
+          billing_email?: string | null
+          cancel_at_period_end?: boolean
+          client_id: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          last_payment_status?: string | null
+          max_locations?: number
+          max_minutes?: number
+          payment_provider?: string
+          plan_id?: string
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          subscription_status?: string
+          trial_end?: string | null
+          updated_at?: string
+          usage_minutes_current_period?: number
+          usage_reset_at?: string | null
+        }
+        Update: {
+          billing_email?: string | null
+          cancel_at_period_end?: boolean
+          client_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          last_payment_status?: string | null
+          max_locations?: number
+          max_minutes?: number
+          payment_provider?: string
+          plan_id?: string
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          subscription_status?: string
+          trial_end?: string | null
+          updated_at?: string
+          usage_minutes_current_period?: number
+          usage_reset_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_subscriptions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       calls: {
         Row: {
           call_sid: string
