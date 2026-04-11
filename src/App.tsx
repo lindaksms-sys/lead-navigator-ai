@@ -41,6 +41,7 @@ const App = () => (
             <Route path="/settings/notifications" element={<NotificationSettings />} />
             <Route path="/settings/scheduling" element={<SchedulingSettings />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/apply" element={<Apply />} />
 
             {/* Client auth */}
             <Route path="/client/login" element={<ClientLogin />} />
