@@ -4,11 +4,8 @@ import { ClientLayout } from "@/components/client/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 import {
   Settings,
   Sparkles,
@@ -20,10 +17,10 @@ import {
   Clock,
   BookOpen,
   AlertTriangle,
-  Database,
   ArrowRight,
 } from "lucide-react";
-import { industryDefaults, type IndustryTemplate } from "@/lib/industryDefaults";
+import { industryDefaults } from "@/lib/industryDefaults";
+import { DemoModeControls } from "@/components/demo/DemoModeControls";
 
 const INDUSTRY_LABELS: Record<string, { label: string; icon: typeof Flame }> = {
   hvac: { label: "HVAC", icon: Thermometer },
@@ -36,41 +33,8 @@ const INDUSTRY_LABELS: Record<string, { label: string; icon: typeof Flame }> = {
 const ClientTemplatePage = () => {
   const navigate = useNavigate();
   const [currentTemplate] = useState("hvac");
-  const [seedingDemo, setSeedingDemo] = useState(false);
   const template = industryDefaults[currentTemplate];
   const meta = INDUSTRY_LABELS[currentTemplate];
-
-  const seedDemoData = async () => {
-    setSeedingDemo(true);
-    try {
-      const sampleLeads = [
-        { name: "Mike Johnson", phone: "(555) 234-5678", service_type: "emergency" as const, timeline: "emergency" as const, budget: "500_2000" as const, decision_maker: true, score: 85, category: "Hot" as const, source: "demo", notes: "No cooling — unit not turning on" },
-        { name: "Sarah Williams", phone: "(555) 345-6789", service_type: "maintenance" as const, timeline: "this_week" as const, budget: "under_500" as const, decision_maker: true, score: 45, category: "Warm" as const, source: "demo", notes: "Annual AC tune-up" },
-        { name: "Tom Davis", phone: "(555) 456-7890", service_type: "installation" as const, timeline: "this_month" as const, budget: "over_10000" as const, decision_maker: true, score: 75, category: "Hot" as const, source: "demo", notes: "New furnace and AC system quote" },
-        { name: "Lisa Chen", phone: "(555) 567-8901", service_type: "repair" as const, timeline: "today" as const, budget: "500_2000" as const, decision_maker: false, score: 40, category: "Warm" as const, source: "demo", notes: "Thermostat not responding" },
-        { name: "Robert Garcia", phone: "(555) 678-9012", service_type: "repair" as const, timeline: "this_week" as const, budget: "unknown" as const, decision_maker: true, score: 30, category: "Cold" as const, source: "demo", notes: "Ductwork making noise" },
-      ];
-
-      const { error: leadsErr } = await supabase.from("leads").insert(sampleLeads);
-      if (leadsErr) throw leadsErr;
-
-      const now = new Date();
-      const sampleAppointments = [
-        { datetime: new Date(now.getTime() + 86400000).toISOString(), service_type: "Emergency — No Cooling", status: "scheduled" as const, notes: "Customer: Mike Johnson" },
-        { datetime: new Date(now.getTime() + 172800000).toISOString(), service_type: "AC Tune-Up", status: "scheduled" as const, notes: "Customer: Sarah Williams" },
-        { datetime: new Date(now.getTime() + 259200000).toISOString(), service_type: "System Replacement Estimate", status: "scheduled" as const, notes: "Customer: Tom Davis" },
-      ];
-
-      const { error: apptErr } = await supabase.from("appointments").insert(sampleAppointments);
-      if (apptErr) throw apptErr;
-
-      toast.success("Demo data loaded — 5 leads and 3 appointments added");
-    } catch {
-      toast.error("Failed to seed demo data");
-    } finally {
-      setSeedingDemo(false);
-    }
-  };
 
   return (
     <ClientLayout>
@@ -82,6 +46,9 @@ const ClientTemplatePage = () => {
             Your receptionist is configured with industry-specific defaults. Customize anytime.
           </p>
         </div>
+
+        {/* Demo mode controls */}
+        <DemoModeControls />
 
         {/* Current template card */}
         <Card>
@@ -202,37 +169,20 @@ const ClientTemplatePage = () => {
         </Card>
 
         {/* Actions */}
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Card className="p-5">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                <Settings className="w-4 h-4 text-foreground" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">Customize settings</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Edit services, questions, and scheduling defaults.</p>
-                <Button variant="outline" size="sm" className="mt-3" onClick={() => navigate("/client/settings")}>
-                  Open settings <ArrowRight className="w-3 h-3 ml-1" />
-                </Button>
-              </div>
+        <Card className="p-5">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+              <Settings className="w-4 h-4 text-foreground" />
             </div>
-          </Card>
-
-          <Card className="p-5">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                <Database className="w-4 h-4 text-foreground" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">Load demo data</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Add sample HVAC leads and appointments for testing.</p>
-                <Button variant="outline" size="sm" className="mt-3" onClick={seedDemoData} disabled={seedingDemo}>
-                  {seedingDemo ? "Loading…" : "Seed demo data"}
-                </Button>
-              </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Customize settings</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Edit services, questions, and scheduling defaults.</p>
+              <Button variant="outline" size="sm" className="mt-3" onClick={() => navigate("/client/settings")}>
+                Open settings <ArrowRight className="w-3 h-3 ml-1" />
+              </Button>
             </div>
-          </Card>
-        </div>
+          </div>
+        </Card>
       </div>
     </ClientLayout>
   );
