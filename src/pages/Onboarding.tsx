@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useDemoMode } from "@/contexts/DemoModeContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -221,10 +222,10 @@ const Onboarding = () => {
   // ─── Success ──────────────────────────────────────────────
   if (completed) {
     const actions = [
-      { icon: PhoneCall, label: "Make a test call", desc: "Call your number and try the AI receptionist" },
-      { icon: LayoutDashboard, label: "View your leads dashboard", desc: "See incoming leads in real time" },
-      { icon: Plug, label: "Connect more integrations", desc: "Add calendar, CRM, and other tools" },
-      { icon: Users, label: "Invite a team member", desc: "Give your team access to the portal" },
+      { icon: PhoneCall, label: "Make a test call", desc: "Call your number and try the AI receptionist", onClick: undefined as (() => void) | undefined },
+      { icon: FlaskConical, label: "Explore with sample data", desc: "See how the dashboard looks with realistic HVAC data", onClick: () => { enableDemoMode(); navigate("/client/dashboard"); } },
+      { icon: LayoutDashboard, label: "View your leads dashboard", desc: "See incoming leads in real time", onClick: () => navigate("/client/dashboard") },
+      { icon: Plug, label: "Connect more integrations", desc: "Add calendar, CRM, and other tools", onClick: undefined },
     ];
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
