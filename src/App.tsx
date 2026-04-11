@@ -28,6 +28,7 @@ import AdminBilling from "./pages/admin/AdminBilling.tsx";
 import AdminEventLogs from "./pages/admin/AdminEventLogs.tsx";
 import ClientActivityLog from "./pages/client/ClientActivityLog.tsx";
 import ClientTemplatePage from "./pages/client/ClientTemplatePage.tsx";
+import ClientBilling from "./pages/client/ClientBilling.tsx";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="/client/activity" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientActivityLog /></ProtectedRoute>} />
               <Route path="/client/template" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientTemplatePage /></ProtectedRoute>} />
               <Route path="/client/settings" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientSettingsPage /></ProtectedRoute>} />
+              <Route path="/client/billing" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientBilling /></ProtectedRoute>} />
 
               {/* Super admin routes */}
               <Route path="/admin" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
