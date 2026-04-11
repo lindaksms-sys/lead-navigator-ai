@@ -168,6 +168,25 @@ const Onboarding = () => {
       if (defaults.services.length) set("services", defaults.services);
       if (defaults.qualificationQuestions.length) set("qualificationQuestions", defaults.qualificationQuestions);
       if (defaults.description) set("businessDescription", defaults.description);
+      // Prefill scheduling defaults
+      if (defaults.schedulingDefaults) {
+        set("appointmentTypes", defaults.schedulingDefaults.appointmentTypes);
+        set("appointmentDuration", defaults.schedulingDefaults.defaultDuration);
+        set("bufferTime", defaults.schedulingDefaults.bufferTime);
+        if (defaults.schedulingDefaults.bookingNotes) set("bookingNotes", defaults.schedulingDefaults.bookingNotes);
+      }
+      // Prefill knowledge base
+      if (defaults.knowledgeBase) {
+        if (defaults.knowledgeBase.faqs) set("faqs", defaults.knowledgeBase.faqs);
+        if (defaults.knowledgeBase.serviceNotes) set("serviceNotes", defaults.knowledgeBase.serviceNotes);
+        if (defaults.knowledgeBase.pricingGuidance) set("pricingGuidance", defaults.knowledgeBase.pricingGuidance);
+        if (defaults.knowledgeBase.policies) set("policies", defaults.knowledgeBase.policies);
+      }
+      // Prefill emergency behavior
+      if (defaults.behaviorDefaults) {
+        set("emergencyCallsEnabled", defaults.behaviorDefaults.escalateAfterHoursEmergency);
+        set("emergencyServices", defaults.behaviorDefaults.prioritizeUrgent);
+      }
     }
   };
 
@@ -381,6 +400,21 @@ const StepBusiness = ({
         <Input value={data.serviceArea} onChange={(e) => set("serviceArea", e.target.value)} placeholder="Dallas–Fort Worth metro" />
       </Field>
     </div>
+    {data.industry && industryDefaults[data.industry] && industryDefaults[data.industry].services.length > 0 && (
+      <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+        <div className="flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              {data.industry.toUpperCase()} template applied
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              We've preloaded {industryDefaults[data.industry].services.length} services, {industryDefaults[data.industry].qualificationQuestions.length} qualification questions, scheduling defaults, and knowledge base content. You can customize everything in the next steps.
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
     <Field label="What does your business do?" hint="A short description helps the AI answer questions about your company.">
       <Textarea value={data.businessDescription} onChange={(e) => set("businessDescription", e.target.value)} placeholder="We provide residential and commercial HVAC repair, installation, and maintenance." rows={3} />
     </Field>
@@ -521,6 +555,21 @@ const StepServices = ({ data, set }: { data: OnboardingData; set: <K extends key
         </div>
         <Switch checked={data.emergencyServices} onCheckedChange={(v) => set("emergencyServices", v)} />
       </div>
+
+      {/* Emergency scenarios from template */}
+      {data.emergencyServices && data.industry && industryDefaults[data.industry]?.emergencyScenarios?.length > 0 && (
+        <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Common emergency scenarios</p>
+          <p className="text-xs text-muted-foreground">Your AI will prioritize callers reporting these issues:</p>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {industryDefaults[data.industry].emergencyScenarios.map((s, i) => (
+              <span key={i} className="text-xs bg-destructive/10 text-destructive rounded-full px-3 py-1">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Qualification questions */}
       <div className="space-y-3 pt-4 border-t border-border">
