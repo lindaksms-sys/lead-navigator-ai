@@ -43,6 +43,7 @@ const App = () => (
             <Route path="/settings/scheduling" element={<SchedulingSettings />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/apply" element={<Apply />} />
+            <Route path="/onboarding" element={<Onboarding />} />
 
             {/* Client auth */}
             <Route path="/client/login" element={<ClientLogin />} />
