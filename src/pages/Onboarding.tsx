@@ -556,6 +556,21 @@ const StepServices = ({ data, set }: { data: OnboardingData; set: <K extends key
         <Switch checked={data.emergencyServices} onCheckedChange={(v) => set("emergencyServices", v)} />
       </div>
 
+      {/* Emergency scenarios from template */}
+      {data.emergencyServices && data.industry && industryDefaults[data.industry]?.emergencyScenarios?.length > 0 && (
+        <div className="rounded-lg bg-muted/50 border border-border p-4 space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Common emergency scenarios</p>
+          <p className="text-xs text-muted-foreground">Your AI will prioritize callers reporting these issues:</p>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {industryDefaults[data.industry].emergencyScenarios.map((s, i) => (
+              <span key={i} className="text-xs bg-destructive/10 text-destructive rounded-full px-3 py-1">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Qualification questions */}
       <div className="space-y-3 pt-4 border-t border-border">
         <Label className="text-sm font-medium">Qualification questions</Label>
