@@ -13,6 +13,7 @@ import NotificationSettings from "./pages/NotificationSettings.tsx";
 import SchedulingSettings from "./pages/SchedulingSettings.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import Apply from "./pages/Apply.tsx";
+import Onboarding from "./pages/Onboarding.tsx";
 import ClientLogin from "./pages/client/ClientLogin.tsx";
 import ClientForgotPassword from "./pages/client/ClientForgotPassword.tsx";
 import ClientDashboard from "./pages/client/ClientDashboard.tsx";
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/settings/scheduling" element={<SchedulingSettings />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/apply" element={<Apply />} />
+            <Route path="/onboarding" element={<Onboarding />} />
 
             {/* Client auth */}
             <Route path="/client/login" element={<ClientLogin />} />
