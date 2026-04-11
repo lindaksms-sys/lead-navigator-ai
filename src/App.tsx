@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DemoModeProvider } from "@/contexts/DemoModeContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -37,38 +38,40 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/leads" element={<LeadsDashboard />} />
-            <Route path="/leads/new" element={<LeadIntake />} />
-            <Route path="/settings/notifications" element={<NotificationSettings />} />
-            <Route path="/settings/scheduling" element={<SchedulingSettings />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/apply" element={<Apply />} />
-            <Route path="/onboarding" element={<Onboarding />} />
+          <DemoModeProvider>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/leads" element={<LeadsDashboard />} />
+              <Route path="/leads/new" element={<LeadIntake />} />
+              <Route path="/settings/notifications" element={<NotificationSettings />} />
+              <Route path="/settings/scheduling" element={<SchedulingSettings />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/apply" element={<Apply />} />
+              <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Client auth */}
-            <Route path="/client/login" element={<ClientLogin />} />
-            <Route path="/client/forgot-password" element={<ClientForgotPassword />} />
+              {/* Client auth */}
+              <Route path="/client/login" element={<ClientLogin />} />
+              <Route path="/client/forgot-password" element={<ClientForgotPassword />} />
 
-            {/* Protected client routes */}
-            <Route path="/client/dashboard" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientDashboard /></ProtectedRoute>} />
-            <Route path="/client/leads" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientLeads /></ProtectedRoute>} />
-            <Route path="/client/calls" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientCalls /></ProtectedRoute>} />
-            <Route path="/client/appointments" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientAppointments /></ProtectedRoute>} />
-            <Route path="/client/activity" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientActivityLog /></ProtectedRoute>} />
-            <Route path="/client/template" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientTemplatePage /></ProtectedRoute>} />
-            <Route path="/client/settings" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientSettingsPage /></ProtectedRoute>} />
+              {/* Protected client routes */}
+              <Route path="/client/dashboard" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientDashboard /></ProtectedRoute>} />
+              <Route path="/client/leads" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientLeads /></ProtectedRoute>} />
+              <Route path="/client/calls" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientCalls /></ProtectedRoute>} />
+              <Route path="/client/appointments" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientAppointments /></ProtectedRoute>} />
+              <Route path="/client/activity" element={<ProtectedRoute allowedRoles={["client_admin", "client_viewer", "admin"]}><ClientActivityLog /></ProtectedRoute>} />
+              <Route path="/client/template" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientTemplatePage /></ProtectedRoute>} />
+              <Route path="/client/settings" element={<ProtectedRoute allowedRoles={["client_admin", "admin"]}><ClientSettingsPage /></ProtectedRoute>} />
 
-            {/* Super admin routes */}
-            <Route path="/admin" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/agencies" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminAgencies /></ProtectedRoute>} />
-            <Route path="/admin/billing" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminBilling /></ProtectedRoute>} />
-            <Route path="/admin/logs" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminEventLogs /></ProtectedRoute>} />
+              {/* Super admin routes */}
+              <Route path="/admin" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/agencies" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminAgencies /></ProtectedRoute>} />
+              <Route path="/admin/billing" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminBilling /></ProtectedRoute>} />
+              <Route path="/admin/logs" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminEventLogs /></ProtectedRoute>} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </DemoModeProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
