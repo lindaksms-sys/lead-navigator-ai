@@ -631,49 +631,59 @@ export default function Index() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-lg mx-auto mb-14">
             <p className="text-[12px] font-semibold text-blue-600 uppercase tracking-[0.12em] mb-3">Pricing</p>
-            <h2 className="text-[32px] sm:text-[40px] font-bold leading-[1.12] tracking-tight text-gray-900 mb-3">Pick a plan. Start answering calls today.</h2>
-            <p className="text-[15px] text-gray-500">14-day money-back guarantee on all plans. No contracts.</p>
+            <h2 className="text-[32px] sm:text-[40px] font-bold leading-[1.12] tracking-tight text-gray-900 mb-3">Stop losing revenue. Pick your plan.</h2>
+            <p className="text-[15px] text-gray-500">14-day money-back guarantee. No contracts. Cancel anytime.</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
             {[
               {
-                name: "Starter", price: "$497", period: "/mo", popular: false, desc: "One location. Full coverage. The basics done right.",
-                features: ["1 location", "500 minutes/month", "Lead scoring", "SMS alerts", "Call transcripts", "Email support"],
+                name: "Starter", price: "$497", period: "/mo", recommended: false,
+                tagline: "For one location that needs every call answered.",
+                desc: "Cover your phones 24/7. Capture every lead. Get alerted the moment a hot prospect calls.",
+                features: ["1 business location", "Up to 500 inbound minutes", "AI lead qualification and scoring", "Instant SMS hot-lead alerts", "Full call transcripts", "Email support"],
+                cta: "Start Free Trial",
               },
               {
-                name: "Growth", price: "$997", period: "/mo", popular: true, desc: "Multiple locations. More minutes. Appointment booking included.",
-                features: ["Up to 3 locations", "2,000 minutes/month", "Lead scoring + automation", "Priority SMS & email alerts", "Appointment booking", "Calendar integration", "Priority support"],
+                name: "Growth", price: "$997", period: "/mo", recommended: true,
+                tagline: "For operators scaling past one location.",
+                desc: "More coverage, more bookings. Appointment scheduling built in so jobs get booked on the first call.",
+                features: ["Up to 3 locations", "Up to 2,000 inbound minutes", "Lead scoring + automated workflows", "Priority SMS and email alerts", "Calendar sync and appointment booking", "Priority support"],
+                cta: "Start Free Trial",
               },
               {
-                name: "Agency", price: "Custom", period: "", popular: false, desc: "Unlimited clients. White-label ready. Built for scale.",
-                features: ["Unlimited locations", "Unlimited minutes", "Multi-tenant portal", "White-label branding", "API access", "Dedicated account manager", "Custom integrations", "SLA guarantee"],
+                name: "Agency", price: "Custom", period: "", recommended: false,
+                tagline: "For agencies managing multiple contractor accounts.",
+                desc: "White-label the platform. Manage every client from one portal. Built for scale.",
+                features: ["Unlimited locations", "Unlimited inbound minutes", "Multi-tenant client portal", "White-label branding", "API access", "Dedicated account manager", "Custom integrations", "SLA guarantee"],
+                cta: "Talk to Sales",
               },
             ].map((tier) => (
-              <div key={tier.name} className={`rounded-lg p-6 ${tier.popular ? "bg-gray-900 text-white ring-1 ring-gray-900" : "bg-white border border-gray-200"}`}>
+              <div key={tier.name} className={`rounded-lg p-6 ${tier.recommended ? "bg-gray-900 text-white ring-1 ring-gray-900" : "bg-white border border-gray-200"}`}>
                 <div className="flex items-center justify-between mb-1">
-                  <h3 className={`font-semibold text-[15px] ${tier.popular ? "text-white" : "text-gray-900"}`}>{tier.name}</h3>
-                  {tier.popular && (
-                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded">Popular</span>
+                  <h3 className={`font-semibold text-[15px] ${tier.recommended ? "text-white" : "text-gray-900"}`}>{tier.name}</h3>
+                  {tier.recommended && (
+                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded">Recommended</span>
                   )}
                 </div>
-                <p className={`text-[13px] mb-5 ${tier.popular ? "text-gray-400" : "text-gray-500"}`}>{tier.desc}</p>
+                <p className={`text-[13px] font-medium mb-1 ${tier.recommended ? "text-gray-300" : "text-gray-700"}`}>{tier.tagline}</p>
+                <p className={`text-[12px] mb-5 leading-relaxed ${tier.recommended ? "text-gray-400" : "text-gray-500"}`}>{tier.desc}</p>
                 <div className="mb-6">
-                  <span className={`text-[36px] font-extrabold tracking-tight ${tier.popular ? "text-white" : "text-gray-900"}`}>{tier.price}</span>
-                  <span className={`text-[14px] ${tier.popular ? "text-gray-400" : "text-gray-400"}`}>{tier.period}</span>
+                  <span className={`text-[36px] font-extrabold tracking-tight ${tier.recommended ? "text-white" : "text-gray-900"}`}>{tier.price}</span>
+                  <span className={`text-[14px] ${tier.recommended ? "text-gray-400" : "text-gray-400"}`}>{tier.period}</span>
                 </div>
                 <div className="space-y-2.5 mb-6">
                   {tier.features.map((f) => (
                     <div key={f} className="flex items-center gap-2.5 text-[13px]">
-                      <Check className={`h-3.5 w-3.5 shrink-0 ${tier.popular ? "text-blue-400" : "text-gray-400"}`} />
-                      <span className={tier.popular ? "text-gray-300" : "text-gray-600"}>{f}</span>
+                      <Check className={`h-3.5 w-3.5 shrink-0 ${tier.recommended ? "text-blue-400" : "text-gray-400"}`} />
+                      <span className={tier.recommended ? "text-gray-300" : "text-gray-600"}>{f}</span>
                     </div>
                   ))}
                 </div>
                 <Button
-                  className={`w-full rounded-md h-10 text-[13px] font-semibold shadow-none ${tier.popular ? "bg-white text-gray-900 hover:bg-gray-100" : "bg-gray-100 text-gray-700 hover:bg-gray-200 border-0"}`}
+                  className={`w-full rounded-md h-10 text-[13px] font-semibold shadow-none ${tier.recommended ? "bg-white text-gray-900 hover:bg-gray-100" : "bg-gray-100 text-gray-700 hover:bg-gray-200 border-0"}`}
                   onClick={() => navigate("/apply")}
                 >
-                  {tier.name === "Agency" ? "Contact Sales" : "Start Free Trial"}
+                  {tier.cta}
                 </Button>
               </div>
             ))}
