@@ -1,42 +1,72 @@
 
 
-## Pricing Section Rewrite
+## Homepage Credibility and Conversion Revision
 
-### What changes
-Replace lines 629–682 in `src/pages/Index.tsx` with a rewritten pricing section that reframes each tier around revenue outcomes instead of telecom-style minutes.
+### Summary
+Revise the ReceptionistAI Pro homepage copy and structure across 8 sections to remove fake social proof, unsupported metrics, and placeholder content — replacing them with credible, outcome-driven alternatives.
 
-### Copy direction
+### Changes by section
 
-**Section header:**
-- Label: "Pricing"
-- Headline: "Stop losing revenue. Pick your plan."
-- Subline: "14-day money-back guarantee. No contracts. Cancel anytime."
+**1. Hero (lines 114–128)**
+- Headline → "Stop losing jobs to missed calls"
+- Subheadline → tighter, operational: "ReceptionistAI Pro answers every call, qualifies the lead, alerts your team, and books the appointment. No staff. No hold music. No missed revenue."
+- Keep CTAs as-is (Start Free Trial + Book a Demo)
 
-**Starter — $497/mo**
-- Tagline: "For one location that needs every call answered."
-- Subcopy: "Cover your phones 24/7. Capture every lead. Get alerted the moment a hot prospect calls."
-- Features reframed: 1 business location · Up to 500 inbound minutes · AI lead qualification and scoring · Instant SMS hot-lead alerts · Full call transcripts · Email support
-- CTA: "Start Free Trial"
+**2. Trust bar (lines 192–199)**
+- Remove fake brand names ("HVAC Pros", "Solar Direct", etc.)
+- Replace with credibility statements: "Built for home services" · "24/7 AI call answering" · "Live in under 30 minutes" · "No contracts"
 
-**Growth — $997/mo (Recommended)**
-- Badge: "Recommended" (replaces "Popular")
-- Tagline: "For operators scaling past one location."
-- Subcopy: "More coverage, more bookings. Appointment scheduling built in so jobs get booked on the first call."
-- Features reframed: Up to 3 locations · Up to 2,000 inbound minutes · Lead scoring + automated workflows · Priority SMS and email alerts · Calendar sync and appointment booking · Priority support
-- CTA: "Start Free Trial"
+**3. Problem section (lines 202–225)**
+- Tighten body copy to be more direct and commercial
+- Sharpen card descriptions — remove filler phrases, make the cost of inaction feel immediate
 
-**Agency — Custom**
-- Tagline: "For agencies managing multiple contractor accounts."
-- Subcopy: "White-label the platform. Manage every client from one portal. Built for scale."
-- Features reframed: Unlimited locations · Unlimited inbound minutes · Multi-tenant client portal · White-label branding · API access · Dedicated account manager · Custom integrations · SLA guarantee
-- CTA: "Talk to Sales"
+**4. Product mock UI (lines 254–490)**
+- Keep all mock panels as-is
+- Add a subtle "Sample data" label in the section header area so it's clear these are illustrative
 
-### Visual treatment
-- Same card layout and dark highlight on Growth tier
-- "Recommended" badge in blue on Growth card
-- Button hierarchy: Growth gets high-contrast white CTA; Starter and Agency get muted secondary buttons
-- No other structural or styling changes needed
+**5. Features (lines 492–526)**
+- Rewrite card titles to sound more operational:
+  - "24/7 call answering" → "Every call answered, day and night"
+  - "Lead qualification" → "Automated caller screening"
+  - "Lead scoring" → "Lead priority scoring"
+  - "Instant SMS alerts" → "Hot lead alerts to your phone"
+  - "Appointment booking" → "Jobs booked on the first call"
+  - "Call transcripts" → "Full call records"
+  - "Multi-client portal" → "Agency command center"
+  - "Access controls" → "Role-based permissions"
+
+**6. ROI section (lines 553–594)**
+- Remove the 4 metric cards ("100%", "0 missed opportunities", "< 2s", "24/7")
+- Replace with 4 qualitative benefit cards:
+  - "Faster response" — Pick up before competitors do
+  - "24/7 coverage" — Nights, weekends, holidays handled
+  - "Lead prioritization" — Know which callers to follow up first
+  - "More booked appointments" — Jobs scheduled during the call
+- Keep the left-side copy and checklist, tighten slightly
+
+**7. Social proof (lines 596–627)**
+- Remove fake testimonials, star ratings, and fabricated names
+- Replace with 3 "use case" proof blocks (no quotes, no stars):
+  - "Single-location HVAC" — Describes how a solo operator uses the platform
+  - "Multi-location plumbing" — Describes scaling across offices
+  - "Home services agency" — Describes white-label multi-client management
+- Header → "How contractors use it"
+
+**8. Pricing (lines 629–692)**
+- Add "AI call answering" explicitly to Starter and Growth feature lists
+- Sharpen taglines to be more outcome-driven
+- Keep structure, badge, and CTA labels
+
+**9. FAQ (lines 694–716)**
+- Rewrite all 5 answers to be shorter and clearer (1–2 sentences max)
+
+**10. Final CTA (lines 718–736)**
+- Headline → "Answer every call. Book more jobs."
+- Keep subline and CTAs
 
 ### Files modified
-- `src/pages/Index.tsx` (lines 629–682 only)
+- `src/pages/Index.tsx` only
+
+### No structural or component changes
+Same layout, same sections, same order. Copy and data revisions only.
 
