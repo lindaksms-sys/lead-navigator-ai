@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Phone, PhoneOff, TrendingDown, Clock, ClipboardCheck, CalendarCheck,
   BarChart3, Calendar, MessageSquare, FileText, Check,
-  ArrowRight, Shield, Users, Menu, X, Bell, Star, Building2, Flame,
+  ArrowRight, Shield, Users, Menu, X, Bell, Building2, Flame,
   Sun, Droplets, HardHat, ChevronRight
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
