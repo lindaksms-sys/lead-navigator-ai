@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Phone, Users, CalendarDays, TrendingUp, Clock, AlertTriangle, BarChart3 } from "lucide-react";
 import { NeedsAttentionWidget } from "@/components/failures/NeedsAttentionWidget";
+import { DemoEmptyState } from "@/components/demo/DemoEmptyState";
 import { formatDistanceToNow, subDays, format } from "date-fns";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
