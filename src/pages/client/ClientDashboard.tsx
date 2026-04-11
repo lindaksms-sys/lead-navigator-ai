@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Phone, Users, CalendarDays, TrendingUp, Clock, AlertTriangle, BarChart3 } from "lucide-react";
 import { NeedsAttentionWidget } from "@/components/failures/NeedsAttentionWidget";
+import { DemoEmptyState } from "@/components/demo/DemoEmptyState";
 import { formatDistanceToNow, subDays, format } from "date-fns";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -159,20 +160,10 @@ export default function ClientDashboard() {
 
         {/* Empty state */}
         {!hasData && !loading && clientId && (
-          <Card>
-            <CardContent className="p-8 text-center space-y-3">
-              <Phone className="h-10 w-10 text-muted-foreground mx-auto" />
-              <h3 className="font-semibold text-foreground">No activity yet</h3>
-              <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                Once your AI receptionist starts handling calls, you'll see calls, leads, and appointments here.
-              </p>
-              <div className="flex gap-3 justify-center pt-2">
-                <button onClick={() => navigate("/onboarding")} className="text-sm font-medium text-primary underline underline-offset-4">
-                  Complete setup
-                </button>
-              </div>
-            </CardContent>
-          </Card>
+          <DemoEmptyState
+            title="No activity yet"
+            description="Once your AI receptionist starts handling calls, you'll see calls, leads, and appointments here."
+          />
         )}
 
         {/* Charts */}
