@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Search, AlertTriangle, CheckCircle, XCircle, Activity, RefreshCw } from "lucide-react";
+import { FailureCard } from "@/components/failures/FailureCard";
 
 const EVENT_TYPES = [
   "webhook_received", "call_logged", "lead_created", "lead_scored",
@@ -187,7 +188,9 @@ export default function AdminEventLogs() {
               <span>{selected?.title}</span>
             </DialogTitle>
           </DialogHeader>
-          {selected && (
+          {selected && selected.status === "failed" ? (
+            <FailureCard event={selected} />
+          ) : selected ? (
             <div className="space-y-4 text-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -227,7 +230,7 @@ export default function AdminEventLogs() {
                 {selected.client_id && <Badge variant="outline">Tenant: {selected.client_id.slice(0, 8)}…</Badge>}
               </div>
             </div>
-          )}
+          ) : null}
         </DialogContent>
       </Dialog>
     </AdminLayout>

@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Search, CheckCircle, AlertTriangle, XCircle, Activity } from "lucide-react";
+import { FailureCard } from "@/components/failures/FailureCard";
 
 const CLIENT_EVENT_TYPES = [
   "lead_created", "lead_scored", "sms_sent", "sms_failed",
@@ -126,7 +127,9 @@ export default function ClientActivityLog() {
               <span>{selected?.title}</span>
             </DialogTitle>
           </DialogHeader>
-          {selected && (
+          {selected && selected.status === "failed" ? (
+            <FailureCard event={selected} />
+          ) : selected ? (
             <div className="space-y-3 text-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -145,7 +148,7 @@ export default function ClientActivityLog() {
                 </div>
               )}
             </div>
-          )}
+          ) : null}
         </DialogContent>
       </Dialog>
     </ClientLayout>
