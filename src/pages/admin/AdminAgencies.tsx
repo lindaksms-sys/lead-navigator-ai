@@ -176,7 +176,8 @@ export default function AdminAgencies() {
                            )}
                          </td>
                          <td className="py-3">{users}</td>
-                        <td className="py-3 text-muted-foreground">{format(new Date(a.created_at), "MMM d, yyyy")}</td>
+                         <td className="py-3">${((sub?.amount || 0) / 100).toLocaleString()}/mo</td>
+                         <td className="py-3 text-muted-foreground">{format(new Date(a.created_at), "MMM d, yyyy")}</td>
                         <td className="py-3">
                           <div className="flex gap-1">
                             <Button size="sm" variant="ghost" onClick={() => setSelectedAgency({ ...a, sub })}>
