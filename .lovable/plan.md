@@ -1,46 +1,42 @@
 
 
-## Marketing Landing Page for ReceptionistAI Pro
+## Pricing Section Rewrite
 
-### Overview
-Replace the current simple `Index.tsx` with a full marketing landing page. The page will be a single long-scroll page with all requested sections, using the blue primary (#3B82F6) color scheme while keeping the existing app routing intact.
+### What changes
+Replace lines 629–682 in `src/pages/Index.tsx` with a rewritten pricing section that reframes each tier around revenue outcomes instead of telecom-style minutes.
 
-### Implementation
+### Copy direction
 
-**File: `src/pages/Index.tsx`** — Complete rewrite with these sections:
+**Section header:**
+- Label: "Pricing"
+- Headline: "Stop losing revenue. Pick your plan."
+- Subline: "14-day money-back guarantee. No contracts. Cancel anytime."
 
-1. **Navbar** — Logo + nav links (Features, Pricing, FAQ, Login) + "Start Free Trial" CTA button. Sticky on scroll.
+**Starter — $497/mo**
+- Tagline: "For one location that needs every call answered."
+- Subcopy: "Cover your phones 24/7. Capture every lead. Get alerted the moment a hot prospect calls."
+- Features reframed: 1 business location · Up to 500 inbound minutes · AI lead qualification and scoring · Instant SMS hot-lead alerts · Full call transcripts · Email support
+- CTA: "Start Free Trial"
 
-2. **Hero** — Split layout. Left: headline, subhead, two CTA buttons. Right: stylized dashboard mockup built with divs/cards (no external images needed). Subtle fade-in animation.
+**Growth — $997/mo (Recommended)**
+- Badge: "Recommended" (replaces "Popular")
+- Tagline: "For operators scaling past one location."
+- Subcopy: "More coverage, more bookings. Appointment scheduling built in so jobs get booked on the first call."
+- Features reframed: Up to 3 locations · Up to 2,000 inbound minutes · Lead scoring + automated workflows · Priority SMS and email alerts · Calendar sync and appointment booking · Priority support
+- CTA: "Start Free Trial"
 
-3. **Problem Section** — Stat headline "35% of Calls Missed", three pain-point cards with lucide icons (PhoneOff, Star, TrendingDown).
+**Agency — Custom**
+- Tagline: "For agencies managing multiple contractor accounts."
+- Subcopy: "White-label the platform. Manage every client from one portal. Built for scale."
+- Features reframed: Unlimited locations · Unlimited inbound minutes · Multi-tenant client portal · White-label branding · API access · Dedicated account manager · Custom integrations · SLA guarantee
+- CTA: "Talk to Sales"
 
-4. **Solution Section** — Three feature cards with icons (Zap, ClipboardCheck, CalendarCheck).
+### Visual treatment
+- Same card layout and dark highlight on Growth tier
+- "Recommended" badge in blue on Growth card
+- Button hierarchy: Growth gets high-contrast white CTA; Starter and Agency get muted secondary buttons
+- No other structural or styling changes needed
 
-5. **How It Works** — Three numbered steps with connecting visual flow. Icons + descriptions.
-
-6. **Social Proof** — "Trusted by 50+ contractors" + three testimonial cards with star ratings + overall 4.9/5 rating.
-
-7. **Features Grid** — 3x2 grid of feature cards with icons (Phone, BarChart3, Calendar, MessageSquare, FileText, LayoutDashboard).
-
-8. **Pricing** — Three tier cards. Professional tier highlighted with "Most Popular" badge. Setup fee note + guarantee badge below.
-
-9. **FAQ** — Six questions using shadcn Accordion component.
-
-10. **CTA Section** — Dark blue background, headline, email input + button, "schedule a call" link.
-
-11. **Footer** — Logo, tagline, links (Privacy, Terms, Login, Contact), copyright.
-
-**Color approach**: Use inline Tailwind classes with blue-500/600/700 for the landing page branding (#3B82F6 = blue-500), keeping the existing CSS variables untouched for the app sections.
-
-**Responsive**: Mobile-first. Hero stacks vertically on mobile. Pricing cards stack. Features grid goes 1-col on mobile, 2-col on tablet.
-
-**Animations**: Minimal — fade-in on scroll sections using intersection observer or simple CSS animations from tailwindcss-animate.
-
-### Technical Details
-- Single file change: `src/pages/Index.tsx`
-- No database changes needed
-- No new dependencies — uses existing shadcn components (Accordion, Button, Input, Badge, Card)
-- Route stays at `/` as-is in App.tsx
-- `/apply` link will be a placeholder href
+### Files modified
+- `src/pages/Index.tsx` (lines 629–682 only)
 
