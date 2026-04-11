@@ -400,6 +400,21 @@ const StepBusiness = ({
         <Input value={data.serviceArea} onChange={(e) => set("serviceArea", e.target.value)} placeholder="Dallas–Fort Worth metro" />
       </Field>
     </div>
+    {data.industry && industryDefaults[data.industry] && industryDefaults[data.industry].services.length > 0 && (
+      <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+        <div className="flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              {data.industry.toUpperCase()} template applied
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              We've preloaded {industryDefaults[data.industry].services.length} services, {industryDefaults[data.industry].qualificationQuestions.length} qualification questions, scheduling defaults, and knowledge base content. You can customize everything in the next steps.
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
     <Field label="What does your business do?" hint="A short description helps the AI answer questions about your company.">
       <Textarea value={data.businessDescription} onChange={(e) => set("businessDescription", e.target.value)} placeholder="We provide residential and commercial HVAC repair, installation, and maintenance." rows={3} />
     </Field>
