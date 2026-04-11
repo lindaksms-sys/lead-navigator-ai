@@ -251,6 +251,244 @@ export default function Index() {
         </div>
       </Section>
 
+      {/* ── Product Mock UI ── */}
+      <Section className="py-24 sm:py-32 px-5 sm:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="max-w-xl mb-16">
+            <p className="text-[12px] font-semibold text-blue-600 uppercase tracking-[0.12em] mb-3">Inside the platform</p>
+            <h2 className="text-[32px] sm:text-[40px] font-bold leading-[1.12] tracking-tight text-gray-900 mb-4">See what your team sees every day</h2>
+            <p className="text-[16px] text-gray-500 leading-relaxed">Real dashboards. Real data. Built to help contractors act fast and close more jobs.</p>
+          </div>
+
+          {/* Row 1: Leads Dashboard + SMS Alert */}
+          <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5 mb-5">
+            {/* Leads Kanban Board */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50/60">
+                <span className="text-[13px] font-semibold text-gray-900">Leads Pipeline</span>
+                <span className="text-[11px] text-gray-400 font-medium">Today · 14 leads</span>
+              </div>
+              <div className="grid grid-cols-3 gap-px bg-gray-100 min-h-[280px]">
+                {/* Hot Column */}
+                <div className="bg-white p-3 space-y-2.5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="h-2 w-2 rounded-full bg-red-500" />
+                    <span className="text-[11px] font-bold text-gray-900 uppercase tracking-[0.08em]">Hot</span>
+                    <span className="text-[10px] text-gray-400 ml-auto font-medium">5</span>
+                  </div>
+                  {[
+                    { name: "David Park", service: "AC Replacement", score: 94, time: "3m ago", urgent: true },
+                    { name: "Maria Santos", service: "Water Heater", score: 88, time: "12m ago", urgent: true },
+                    { name: "Tom Bradley", service: "Roof Leak Repair", score: 85, time: "18m ago", urgent: false },
+                  ].map((lead) => (
+                    <div key={lead.name} className="rounded-md border border-gray-150 bg-white p-2.5 hover:shadow-sm transition-shadow cursor-pointer">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[12px] font-semibold text-gray-900">{lead.name}</span>
+                        <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">{lead.score}</span>
+                      </div>
+                      <p className="text-[11px] text-gray-500 mb-1">{lead.service}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] text-gray-400">{lead.time}</span>
+                        {lead.urgent && <span className="text-[9px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">Urgent</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* Warm Column */}
+                <div className="bg-white p-3 space-y-2.5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="h-2 w-2 rounded-full bg-amber-500" />
+                    <span className="text-[11px] font-bold text-gray-900 uppercase tracking-[0.08em]">Warm</span>
+                    <span className="text-[10px] text-gray-400 ml-auto font-medium">6</span>
+                  </div>
+                  {[
+                    { name: "Lisa Chen", service: "Solar Consultation", score: 62, time: "1h ago" },
+                    { name: "Robert Hall", service: "HVAC Tune-Up", score: 55, time: "2h ago" },
+                    { name: "Amy Torres", service: "Pipe Inspection", score: 48, time: "3h ago" },
+                  ].map((lead) => (
+                    <div key={lead.name} className="rounded-md border border-gray-150 bg-white p-2.5 hover:shadow-sm transition-shadow cursor-pointer">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[12px] font-semibold text-gray-900">{lead.name}</span>
+                        <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">{lead.score}</span>
+                      </div>
+                      <p className="text-[11px] text-gray-500 mb-1">{lead.service}</p>
+                      <span className="text-[10px] text-gray-400">{lead.time}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* Cold Column */}
+                <div className="bg-white p-3 space-y-2.5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="h-2 w-2 rounded-full bg-blue-400" />
+                    <span className="text-[11px] font-bold text-gray-900 uppercase tracking-[0.08em]">Cold</span>
+                    <span className="text-[10px] text-gray-400 ml-auto font-medium">3</span>
+                  </div>
+                  {[
+                    { name: "Kevin Wright", service: "Gutter Quote", score: 28, time: "5h ago" },
+                    { name: "Janet Mills", service: "General Inquiry", score: 15, time: "1d ago" },
+                  ].map((lead) => (
+                    <div key={lead.name} className="rounded-md border border-gray-150 bg-white p-2.5 hover:shadow-sm transition-shadow cursor-pointer">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-[12px] font-semibold text-gray-900">{lead.name}</span>
+                        <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">{lead.score}</span>
+                      </div>
+                      <p className="text-[11px] text-gray-500 mb-1">{lead.service}</p>
+                      <span className="text-[10px] text-gray-400">{lead.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* SMS Alert Preview */}
+            <div className="space-y-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50/60">
+                  <span className="text-[13px] font-semibold text-gray-900">SMS Alerts</span>
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+                <div className="p-4 space-y-3">
+                  {[
+                    { time: "2:34 PM", msg: "🔥 HOT LEAD — David Park, AC Replacement, Score 94. Needs service today. (480) 555-0142", highlight: true },
+                    { time: "1:18 PM", msg: "New lead: Lisa Chen, Solar Consultation, Score 62. Wants quote this week.", highlight: false },
+                    { time: "11:45 AM", msg: "✅ Appointment booked: Tom Bradley, Roof Leak Repair, Tomorrow 9:00 AM.", highlight: false },
+                  ].map((sms, i) => (
+                    <div key={i} className={`rounded-lg p-3 ${sms.highlight ? "bg-red-50 border border-red-100" : "bg-gray-50 border border-gray-100"}`}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className={`text-[10px] font-bold uppercase tracking-wide ${sms.highlight ? "text-red-500" : "text-gray-400"}`}>
+                          {sms.highlight ? "Hot Lead Alert" : "Notification"}
+                        </span>
+                        <span className="text-[10px] text-gray-400">{sms.time}</span>
+                      </div>
+                      <p className={`text-[12px] leading-relaxed ${sms.highlight ? "text-red-900 font-medium" : "text-gray-600"}`}>{sms.msg}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Lead Score Card */}
+              <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[13px] font-semibold text-gray-900">Lead Score — David Park</span>
+                  <span className="text-[22px] font-extrabold text-red-600">94</span>
+                </div>
+                <div className="w-full bg-gray-100 rounded-full h-2 mb-4">
+                  <div className="bg-red-500 h-2 rounded-full" style={{ width: "94%" }} />
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="flex justify-between text-gray-500"><span>Timeline</span><span className="font-semibold text-gray-700">+30</span></div>
+                  <div className="flex justify-between text-gray-500"><span>Budget</span><span className="font-semibold text-gray-700">+25</span></div>
+                  <div className="flex justify-between text-gray-500"><span>Property</span><span className="font-semibold text-gray-700">+20</span></div>
+                  <div className="flex justify-between text-gray-500"><span>Decision Maker</span><span className="font-semibold text-gray-700">+19</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 2: Transcript + Appointment + Admin */}
+          <div className="grid lg:grid-cols-3 gap-5">
+            {/* Transcript Preview */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50/60">
+                <span className="text-[13px] font-semibold text-gray-900">Call Transcript</span>
+                <span className="text-[11px] text-gray-400 font-medium">4m 22s</span>
+              </div>
+              <div className="p-4 space-y-3 max-h-[260px] overflow-y-auto">
+                {[
+                  { speaker: "AI", text: "Thanks for calling Comfort Air HVAC. How can I help you today?" },
+                  { speaker: "Caller", text: "Hi, my AC stopped blowing cold air this morning. I need someone out here today if possible." },
+                  { speaker: "AI", text: "I can help with that. Is this a residential or commercial property?" },
+                  { speaker: "Caller", text: "Residential. Single family home, about 2,400 square feet." },
+                  { speaker: "AI", text: "Got it. And do you know the brand or age of your current unit?" },
+                  { speaker: "Caller", text: "It's a Carrier, maybe 8 years old. It was running fine yesterday." },
+                  { speaker: "AI", text: "Understood. I have a technician available this afternoon between 2 and 4 PM. Would that work for you?" },
+                  { speaker: "Caller", text: "That's perfect. Book it." },
+                ].map((line, i) => (
+                  <div key={i} className={`flex gap-2.5 ${line.speaker === "AI" ? "" : "flex-row-reverse"}`}>
+                    <div className={`h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 text-[9px] font-bold ${line.speaker === "AI" ? "bg-blue-100 text-blue-700" : "bg-gray-200 text-gray-600"}`}>
+                      {line.speaker === "AI" ? "AI" : "C"}
+                    </div>
+                    <div className={`rounded-lg px-3 py-2 text-[12px] leading-relaxed max-w-[85%] ${line.speaker === "AI" ? "bg-gray-50 text-gray-700" : "bg-blue-50 text-blue-900"}`}>
+                      {line.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Appointment Booking Panel */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50/60">
+                <span className="text-[13px] font-semibold text-gray-900">Appointments</span>
+                <span className="text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded">3 today</span>
+              </div>
+              <div className="p-4 space-y-2.5">
+                {[
+                  { time: "9:00 AM", name: "Tom Bradley", service: "Roof Leak Inspection", status: "Confirmed", statusColor: "text-emerald-600 bg-emerald-50" },
+                  { time: "11:30 AM", name: "Sarah Kim", service: "Furnace Maintenance", status: "Confirmed", statusColor: "text-emerald-600 bg-emerald-50" },
+                  { time: "2:00 PM", name: "David Park", service: "AC Replacement", status: "Pending", statusColor: "text-amber-600 bg-amber-50" },
+                  { time: "4:30 PM", name: "Maria Santos", service: "Water Heater Install", status: "Scheduled", statusColor: "text-blue-600 bg-blue-50" },
+                ].map((appt, i) => (
+                  <div key={i} className="rounded-md border border-gray-100 p-3 hover:bg-gray-50/50 transition-colors">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[12px] font-semibold text-gray-900">{appt.time}</span>
+                      <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${appt.statusColor}`}>{appt.status}</span>
+                    </div>
+                    <p className="text-[12px] text-gray-700 font-medium">{appt.name}</p>
+                    <p className="text-[11px] text-gray-400">{appt.service}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Admin Overview */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 bg-gray-50/60">
+                <span className="text-[13px] font-semibold text-gray-900">Admin Overview</span>
+                <span className="text-[11px] text-gray-400 font-medium">This month</span>
+              </div>
+              <div className="p-4 space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: "Active Agencies", value: "24", change: "+3" },
+                    { label: "Total Users", value: "142", change: "+18" },
+                    { label: "Monthly Revenue", value: "$28.4K", change: "+12%" },
+                    { label: "Calls This Month", value: "3,847", change: "+22%" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-[0.08em] mb-1">{stat.label}</p>
+                      <div className="flex items-end gap-1.5">
+                        <span className="text-[18px] font-bold text-gray-900 leading-none">{stat.value}</span>
+                        <span className="text-[10px] font-semibold text-emerald-600 mb-0.5">{stat.change}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="border-t border-gray-100 pt-3">
+                  <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-[0.08em] mb-2.5">Top Agencies</p>
+                  {[
+                    { name: "ServiceFlow Agency", clients: 8, revenue: "$4,200" },
+                    { name: "HomeTeam Partners", clients: 5, revenue: "$3,100" },
+                    { name: "Peak Performance Co.", clients: 4, revenue: "$2,800" },
+                  ].map((agency) => (
+                    <div key={agency.name} className="flex items-center justify-between py-1.5">
+                      <div className="flex items-center gap-2">
+                        <div className="h-5 w-5 rounded bg-gray-200 flex items-center justify-center text-[8px] font-bold text-gray-500">{agency.name[0]}</div>
+                        <div>
+                          <p className="text-[11px] font-medium text-gray-900">{agency.name}</p>
+                          <p className="text-[10px] text-gray-400">{agency.clients} clients</p>
+                        </div>
+                      </div>
+                      <span className="text-[11px] font-semibold text-gray-700">{agency.revenue}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* ── Features ── */}
       <Section className="py-24 sm:py-32 px-5 sm:px-8" id="features">
         <div className="max-w-6xl mx-auto">
