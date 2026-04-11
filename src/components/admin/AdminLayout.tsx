@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Building2, CreditCard, LogOut, Phone } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, LogOut, Phone, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Agencies", href: "/admin/agencies", icon: Building2 },
   { label: "Billing", href: "/admin/billing", icon: CreditCard },
+  { label: "Event Logs", href: "/admin/logs", icon: ScrollText },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {

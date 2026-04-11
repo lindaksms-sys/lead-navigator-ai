@@ -372,6 +372,73 @@ export type Database = {
           },
         ]
       }
+      event_logs: {
+        Row: {
+          actor_role: string | null
+          call_id: string | null
+          client_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          lead_id: string | null
+          message: string | null
+          payload: Json | null
+          source: string
+          status: string
+          title: string
+        }
+        Insert: {
+          actor_role?: string | null
+          call_id?: string | null
+          client_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          lead_id?: string | null
+          message?: string | null
+          payload?: Json | null
+          source?: string
+          status?: string
+          title: string
+        }
+        Update: {
+          actor_role?: string | null
+          call_id?: string | null
+          client_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          lead_id?: string | null
+          message?: string | null
+          payload?: Json | null
+          source?: string
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_logs_call_id_fkey"
+            columns: ["call_id"]
+            isOneToOne: false
+            referencedRelation: "calls"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_logs_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_logs_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       integrations: {
         Row: {
           access_token: string | null

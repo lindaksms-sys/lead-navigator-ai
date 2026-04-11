@@ -36,6 +36,45 @@ function calculateScore(data: LeadData) {
   return { score, category };
 }
 
+function trimPayload(obj: unknown, maxLen = 2000): unknown {
+  const str = JSON.stringify(obj);
+  if (str.length <= maxLen) return obj;
+  return JSON.parse(str.slice(0, maxLen - 3) + '..."');
+}
+
+async function logEvent(
+  supabase: ReturnType<typeof createClient>,
+  event: {
+    event_type: string;
+    source?: string;
+    status?: string;
+    title: string;
+    message?: string;
+    payload?: unknown;
+    client_id?: string | null;
+    lead_id?: string | null;
+    call_id?: string | null;
+    actor_role?: string;
+  }
+) {
+  try {
+    await supabase.from("event_logs").insert({
+      event_type: event.event_type,
+      source: event.source || "vapi",
+      status: event.status || "success",
+      title: event.title,
+      message: event.message || null,
+      payload: event.payload ? trimPayload(event.payload) : null,
+      client_id: event.client_id || null,
+      lead_id: event.lead_id || null,
+      call_id: event.call_id || null,
+      actor_role: event.actor_role || "system",
+    });
+  } catch (e) {
+    console.error("Failed to write event log:", e);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -56,17 +95,34 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const { message } = body;
 
+    // Log webhook received
+    await logEvent(supabase, {
+      event_type: "webhook_received",
+      title: "Webhook payload received",
+      message: `Type: ${message?.type || "unknown"}`,
+      payload: { type: message?.type, callId: message?.call?.id },
+    });
+
     // Log call
     if (message?.call) {
       const call = message.call;
-      await supabase.from("calls").upsert({
+      const { data: callData } = await supabase.from("calls").upsert({
         call_sid: call.id ?? call.callSid ?? crypto.randomUUID(),
         phone_number: call.customer?.number,
         direction: call.direction === "outbound" ? "outbound" : "inbound",
         status: call.status,
         transcript: call.transcript,
         duration_seconds: call.duration ? Math.round(call.duration) : null,
-      }, { onConflict: "call_sid" });
+      }, { onConflict: "call_sid" }).select("id").maybeSingle();
+
+      if (callData?.id) {
+        await logEvent(supabase, {
+          event_type: "call_logged",
+          title: `Call ${call.status || "received"}`,
+          message: `${call.direction || "inbound"} call from ${call.customer?.number || "unknown"}`,
+          call_id: callData.id,
+        });
+      }
     }
 
     // Handle function calls
@@ -92,7 +148,7 @@ Deno.serve(async (req) => {
 
         const { score, category } = calculateScore(leadData);
 
-        const { error } = await supabase.from("leads").insert({
+        const { data: leadRow, error } = await supabase.from("leads").insert({
           name: leadData.name,
           phone: leadData.phone,
           email: leadData.email || null,
@@ -107,14 +163,40 @@ Deno.serve(async (req) => {
           score,
           category,
           call_sid: message.call?.id || null,
-        });
+        }).select("id").maybeSingle();
 
         if (error) {
           console.error("Error saving lead:", error);
+          await logEvent(supabase, {
+            event_type: "lead_created",
+            status: "failed",
+            title: "Lead creation failed",
+            message: error.message,
+            payload: { name: leadData.name, phone: leadData.phone },
+          });
           return new Response(JSON.stringify({
             results: [{ toolCallId: functionCall.id, result: `Error saving lead: ${error.message}` }],
           }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
+
+        const leadId = leadRow?.id || null;
+
+        // Log lead created
+        await logEvent(supabase, {
+          event_type: "lead_created",
+          title: `Lead created: ${leadData.name}`,
+          message: `Score: ${score}/100 (${category}). Service: ${leadData.serviceType || "N/A"}`,
+          lead_id: leadId,
+          payload: { score, category, serviceType: leadData.serviceType, timeline: leadData.timeline },
+        });
+
+        // Log lead scored
+        await logEvent(supabase, {
+          event_type: "lead_scored",
+          title: `Lead scored ${category} (${score})`,
+          message: `${leadData.name} — timeline: ${leadData.timeline || "N/A"}, budget: ${leadData.budget || "N/A"}`,
+          lead_id: leadId,
+        });
 
         // Send SMS for Hot leads
         if (category === "Hot") {
@@ -152,10 +234,36 @@ Deno.serve(async (req) => {
                   status: smsResponse.ok ? "sent" : "failed",
                   twilio_sid: smsData.sid || null,
                 });
+
+                await logEvent(supabase, {
+                  event_type: smsResponse.ok ? "sms_sent" : "sms_failed",
+                  source: "twilio",
+                  status: smsResponse.ok ? "success" : "failed",
+                  title: smsResponse.ok ? `SMS alert sent to ${salesPhone}` : "SMS alert failed",
+                  message: smsResponse.ok ? `Hot lead alert for ${leadData.name}` : `Twilio error: ${JSON.stringify(smsData).slice(0, 200)}`,
+                  lead_id: leadId,
+                });
+              } else {
+                await logEvent(supabase, {
+                  event_type: "sms_failed",
+                  source: "twilio",
+                  status: "warning",
+                  title: "SMS not configured",
+                  message: "Missing Twilio credentials — SMS alert skipped",
+                  lead_id: leadId,
+                });
               }
             }
           } catch (smsErr) {
             console.error("SMS alert failed (non-fatal):", smsErr);
+            await logEvent(supabase, {
+              event_type: "sms_failed",
+              source: "twilio",
+              status: "failed",
+              title: "SMS alert error",
+              message: String(smsErr),
+              lead_id: leadId,
+            });
           }
         }
 
@@ -176,7 +284,6 @@ Deno.serve(async (req) => {
           const CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN");
           if (!CALENDLY_API_TOKEN) throw new Error("Calendly not configured");
 
-          // Get event type URI from settings
           const { data: etSetting } = await supabase
             .from("settings")
             .select("value")
@@ -184,6 +291,13 @@ Deno.serve(async (req) => {
             .maybeSingle();
 
           if (!etSetting?.value) {
+            await logEvent(supabase, {
+              event_type: "availability_checked",
+              source: "calendly",
+              status: "warning",
+              title: "Availability check skipped",
+              message: "Calendly event type not configured in settings",
+            });
             return new Response(JSON.stringify({
               results: [{ toolCallId: functionCall.id, result: "Scheduling is not configured yet. Please ask a team member to set up Calendly in settings." }],
             }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -215,12 +329,25 @@ Deno.serve(async (req) => {
             ? `Available slots: ${slots.join(", ")}`
             : "Unfortunately, there are no available slots in the next 3 days. Please check back later.";
 
+          await logEvent(supabase, {
+            event_type: "availability_checked",
+            source: "calendly",
+            title: `Availability checked: ${slots.length} slots found`,
+            message: result,
+          });
+
           return new Response(JSON.stringify({
             results: [{ toolCallId: functionCall.id, result }],
           }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
         } catch (calErr) {
           console.error("Calendly checkAvailability error:", calErr);
-          // Fallback to static slots
+          await logEvent(supabase, {
+            event_type: "availability_checked",
+            source: "calendly",
+            status: "failed",
+            title: "Availability check failed",
+            message: String(calErr),
+          });
           const slots = ["Tomorrow at 9:00 AM", "Tomorrow at 2:00 PM", "Day after tomorrow at 10:00 AM"];
           return new Response(JSON.stringify({
             results: [{ toolCallId: functionCall.id, result: `Available slots: ${slots.join(", ")}` }],
@@ -242,7 +369,6 @@ Deno.serve(async (req) => {
             .maybeSingle();
 
           if (CALENDLY_API_TOKEN && etSetting?.value) {
-            // Create scheduling link for the invitee
             const calRes = await fetch("https://api.calendly.com/scheduling_links", {
               method: "POST",
               headers: {
@@ -264,6 +390,13 @@ Deno.serve(async (req) => {
           }
         } catch (calErr) {
           console.error("Calendly booking error (non-fatal):", calErr);
+          await logEvent(supabase, {
+            event_type: "booking_failed",
+            source: "calendly",
+            status: "warning",
+            title: "Calendar link creation failed",
+            message: String(calErr),
+          });
         }
 
         const { error } = await supabase.from("appointments").insert({
@@ -274,6 +407,24 @@ Deno.serve(async (req) => {
           calendly_event_id: calendlyEventId,
           calendar_link: calendarLink,
         });
+
+        if (error) {
+          await logEvent(supabase, {
+            event_type: "booking_failed",
+            status: "failed",
+            title: "Appointment booking failed",
+            message: error.message,
+            payload: { datetime, serviceType: params.serviceType },
+          });
+        } else {
+          await logEvent(supabase, {
+            event_type: "booking_created",
+            source: "calendly",
+            title: `Appointment booked for ${new Date(datetime).toLocaleDateString()}`,
+            message: `Service: ${params.serviceType || "N/A"}. ${calendarLink ? "Calendar link created." : "No calendar link."}`,
+            payload: { datetime, serviceType: params.serviceType, hasCalendarLink: !!calendarLink },
+          });
+        }
 
         const resultMsg = error
           ? `Error booking: ${error.message}`
@@ -288,6 +439,12 @@ Deno.serve(async (req) => {
 
       if (name === "sendQuote") {
         console.log("Quote request:", params);
+        await logEvent(supabase, {
+          event_type: "quote_logged",
+          title: `Quote requested by ${params.name || "caller"}`,
+          message: `Service: ${params.serviceType || "N/A"}`,
+          payload: trimPayload(params),
+        });
         return new Response(JSON.stringify({
           results: [{
             toolCallId: functionCall.id,
@@ -301,6 +458,14 @@ Deno.serve(async (req) => {
           call_sid: message.call?.id || "unknown",
           reason: params.reason || "other",
           notes: params.notes || null,
+        });
+
+        await logEvent(supabase, {
+          event_type: "escalation_created",
+          status: "warning",
+          title: `Escalation: ${params.reason || "other"}`,
+          message: params.notes || "Caller transferred to human agent",
+          payload: { reason: params.reason, callId: message.call?.id },
         });
 
         return new Response(JSON.stringify({
@@ -317,6 +482,12 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     console.error("Webhook error:", err);
+    await logEvent(supabase, {
+      event_type: "webhook_received",
+      status: "failed",
+      title: "Webhook processing error",
+      message: String(err),
+    });
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
