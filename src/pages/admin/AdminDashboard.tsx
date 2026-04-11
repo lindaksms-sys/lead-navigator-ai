@@ -2,6 +2,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users, DollarSign, UserPlus } from "lucide-react";
+import { NeedsAttentionWidget } from "@/components/failures/NeedsAttentionWidget";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
@@ -65,6 +66,8 @@ export default function AdminDashboard() {
           </Card>
         ))}
       </div>
+
+      <NeedsAttentionWidget variant="admin" />
 
       <Card>
         <CardHeader>

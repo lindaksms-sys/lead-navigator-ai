@@ -5,6 +5,7 @@ import { ClientLayout } from "@/components/client/ClientLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Phone, Users, CalendarDays, TrendingUp, Clock } from "lucide-react";
+import { NeedsAttentionWidget } from "@/components/failures/NeedsAttentionWidget";
 import { formatDistanceToNow } from "date-fns";
 
 export default function ClientDashboard() {
@@ -73,6 +74,8 @@ export default function ClientDashboard() {
             </CardContent>
           </Card>
         )}
+
+        <NeedsAttentionWidget variant="client" clientId={clientId} />
 
         {/* Overview Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
