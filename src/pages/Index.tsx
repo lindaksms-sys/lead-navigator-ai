@@ -108,10 +108,10 @@ export default function Index() {
           <div className="space-y-7">
             <p className="text-sm font-medium text-blue-600 tracking-wide">AI Receptionist for Home Services</p>
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.08] tracking-tight text-gray-900">
-              Stop losing booked jobs to missed calls
+              Every missed call is a job you already lost
             </h1>
             <p className="text-lg text-gray-500 max-w-lg leading-relaxed">
-              ReceptionistAI Pro answers every inbound call, qualifies the lead, alerts your team, and books the job — so your business stops losing revenue after hours.
+              ReceptionistAI Pro picks up every call, qualifies the lead, texts your team, and books the appointment. Your phone never goes unanswered again.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button size="lg" onClick={() => navigate("/apply")} className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-7 text-[15px] font-semibold h-12 shadow-md shadow-blue-600/20">
@@ -121,7 +121,7 @@ export default function Index() {
                 Book a Demo
               </Button>
             </div>
-            <p className="text-sm text-gray-400 pt-1">Built for HVAC, plumbing, roofing, and solar teams.</p>
+            <p className="text-sm text-gray-400 pt-1">Used by HVAC, plumbing, roofing, and solar contractors.</p>
           </div>
 
           {/* Dashboard mockup */}
@@ -183,14 +183,14 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-sm font-semibold text-red-500 uppercase tracking-wider mb-3">The problem</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Missed calls are costing you jobs</h2>
-            <p className="text-gray-500 text-lg">Your crew is on-site. It's after hours. The phone rings — and nobody answers. That caller just hired your competitor.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Your phone rings. Nobody picks up. The job goes to someone else.</h2>
+            <p className="text-gray-500 text-lg">Most home service businesses lose calls every day. Crews are on the roof. The office closes at five. Callers don't leave voicemails — they call the next company.</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { icon: PhoneOff, title: "Crews can't answer on the job", desc: "Your team is busy installing, repairing, or on the roof. Calls go to voicemail — and most callers hang up.", color: "text-red-500", bg: "bg-red-50" },
-              { icon: Clock, title: "After-hours calls go unanswered", desc: "40% of home service calls come after 5pm or on weekends. No answer means no booking.", color: "text-amber-500", bg: "bg-amber-50" },
-              { icon: TrendingDown, title: "Speed-to-lead decides the winner", desc: "The first contractor to respond gets the job 78% of the time. Every minute of delay is lost revenue.", color: "text-orange-500", bg: "bg-orange-50" },
+              { icon: PhoneOff, title: "Your crew is working, not answering", desc: "Technicians can't stop a repair to pick up the phone. Those calls go to voicemail — and voicemail goes nowhere.", color: "text-red-500", bg: "bg-red-50" },
+              { icon: Clock, title: "Nights and weekends are dead zones", desc: "A large share of service calls come outside business hours. No one's there to answer. No one books the job.", color: "text-amber-500", bg: "bg-amber-50" },
+              { icon: TrendingDown, title: "Slow response loses the job", desc: "The contractor who picks up first usually wins. Every unanswered ring is money walking out the door.", color: "text-orange-500", bg: "bg-orange-50" },
             ].map((p) => (
               <Card key={p.title} className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow bg-white">
                 <CardContent className="pt-6 pb-6">
@@ -211,16 +211,16 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">How it works</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">From missed call to booked job in minutes</h2>
-            <p className="text-gray-500 text-lg">Five steps. Fully automated. No extra staff needed.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Five steps between a ringing phone and a booked job</h2>
+            <p className="text-gray-500 text-lg">No staff needed. No hold music. No callbacks.</p>
           </div>
           <div className="grid sm:grid-cols-5 gap-6">
             {[
-              { step: "1", icon: Phone, title: "Call answered", desc: "AI picks up every inbound call in under 2 seconds." },
-              { step: "2", icon: ClipboardCheck, title: "Caller qualified", desc: "Asks about service needed, timeline, budget, and property." },
-              { step: "3", icon: BarChart3, title: "Lead scored", desc: "Rated Hot, Warm, or Cold based on intent signals." },
-              { step: "4", icon: Bell, title: "Team alerted", desc: "Hot leads trigger instant SMS to your crew." },
-              { step: "5", icon: CalendarCheck, title: "Job booked", desc: "Appointment placed directly on your calendar." },
+              { step: "1", icon: Phone, title: "Call picked up", desc: "Every inbound call is answered on the first ring. Day or night." },
+              { step: "2", icon: ClipboardCheck, title: "Caller screened", desc: "The AI asks what they need, when they need it, and where." },
+              { step: "3", icon: BarChart3, title: "Lead scored", desc: "Each caller is rated Hot, Warm, or Cold based on real buying signals." },
+              { step: "4", icon: Bell, title: "Team notified", desc: "High-intent leads trigger an instant text to your team." },
+              { step: "5", icon: CalendarCheck, title: "Appointment set", desc: "The job gets booked on your calendar before the caller hangs up." },
             ].map((s) => (
               <div key={s.step} className="text-center">
                 <div className="h-14 w-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-md shadow-blue-600/20">
@@ -240,18 +240,18 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">Features</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Everything your front desk should do — without the desk</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">A full front office that never clocks out</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: Phone, title: "24/7 call answering", desc: "Every call picked up instantly. Day, night, weekends, holidays." },
-              { icon: ClipboardCheck, title: "Lead qualification", desc: "AI asks the right questions to understand scope, timeline, and budget." },
-              { icon: BarChart3, title: "Smart lead scoring", desc: "BANT-based scoring from 0–100. Hot, Warm, or Cold — automatically." },
-              { icon: MessageSquare, title: "Instant SMS alerts", desc: "Your team gets a text within seconds of a hot lead calling." },
-              { icon: Calendar, title: "Appointment booking", desc: "Checks your real-time availability and books the job on the spot." },
-              { icon: FileText, title: "Call transcripts", desc: "Every conversation recorded and transcribed for review." },
-              { icon: Users, title: "Multi-tenant portal", desc: "Agencies manage multiple clients from one dashboard." },
-              { icon: Shield, title: "Admin controls", desc: "Role-based access, activity logs, and data isolation built in." },
+              { icon: Phone, title: "24/7 call answering", desc: "Picks up every call on the first ring. Nights, weekends, holidays — covered." },
+              { icon: ClipboardCheck, title: "Lead qualification", desc: "Asks what service they need, their timeline, budget, and property type." },
+              { icon: BarChart3, title: "Lead scoring", desc: "Scores every caller from 0 to 100. You see who's ready to buy right now." },
+              { icon: MessageSquare, title: "Instant SMS alerts", desc: "Hot lead calls in. Your phone buzzes within seconds. No delay." },
+              { icon: Calendar, title: "Appointment booking", desc: "Checks your availability and books the job while the caller is still on the line." },
+              { icon: FileText, title: "Call transcripts", desc: "Full transcript of every conversation. Review what was said, when." },
+              { icon: Users, title: "Multi-client portal", desc: "Agencies run multiple contractor accounts from one login." },
+              { icon: Shield, title: "Access controls", desc: "Set roles and permissions. Keep client data separate and secure." },
             ].map((f) => (
               <Card key={f.title} className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow bg-white">
                 <CardContent className="pt-5 pb-5">
@@ -272,15 +272,15 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">Who it's for</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Built for the trades. Trusted by agencies.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Built for contractors. Ready for agencies.</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {[
-              { icon: Flame, label: "HVAC", desc: "Capture emergency repair calls and seasonal maintenance leads." },
-              { icon: Droplets, label: "Plumbing", desc: "Never miss a burst pipe call. Book drain cleaning on the spot." },
-              { icon: HardHat, label: "Roofing", desc: "Qualify storm damage leads and schedule inspections fast." },
-              { icon: Sun, label: "Solar", desc: "Handle consultation requests and qualify homeowners 24/7." },
-              { icon: Building2, label: "Agencies", desc: "Manage multiple contractor clients from one admin portal." },
+              { icon: Flame, label: "HVAC", desc: "Pick up emergency repair calls. Book seasonal tune-ups while your crew is in the field." },
+              { icon: Droplets, label: "Plumbing", desc: "Answer burst-pipe calls instantly. Schedule drain cleanings without lifting a finger." },
+              { icon: HardHat, label: "Roofing", desc: "Screen storm damage inquiries. Get inspections on the calendar the same day." },
+              { icon: Sun, label: "Solar", desc: "Qualify homeowners around the clock. Book consultations while you sleep." },
+              { icon: Building2, label: "Agencies", desc: "Run multiple contractor accounts from one dashboard. White-label included." },
             ].map((ind) => (
               <Card key={ind.label} className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow bg-white text-center">
                 <CardContent className="pt-6 pb-5">
@@ -301,17 +301,17 @@ export default function Index() {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">The ROI case</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Every missed call has a price tag</h2>
+              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Why it pays for itself</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">The math is simple. Missed calls cost jobs.</h2>
               <p className="text-gray-500 text-lg leading-relaxed">
-                Home service businesses lose thousands in revenue each month from unanswered calls. ReceptionistAI Pro captures those calls, converts them into qualified leads, and books them before your competitor picks up the phone.
+                One unanswered call can be a $2,000 repair or a $15,000 install. ReceptionistAI Pro makes sure that call gets answered, the lead gets scored, and the job gets booked — before anyone else has a chance.
               </p>
               <div className="space-y-4">
                 {[
-                  "Faster response time means more booked jobs",
-                  "24/7 coverage without hiring night staff",
-                  "Higher lead-to-close rate from instant qualification",
-                  "Fewer lost leads from after-hours and weekend calls",
+                  "Answer faster than any competitor in your market",
+                  "Cover nights and weekends without adding payroll",
+                  "Close more leads by responding while intent is high",
+                  "Stop losing after-hours callers to your competition",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <div className="mt-0.5 h-5 w-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
@@ -342,13 +342,13 @@ export default function Index() {
       {/* ── Social Proof ── */}
       <Section className="py-20 sm:py-28 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">What our customers say</p>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-900">Trusted by home service teams</h2>
+          <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">What customers say</p>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-900">Contractors using it. Results speaking.</h2>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { name: "Mike Rodriguez", co: "Rodriguez HVAC", quote: "We went from missing nearly half our calls to capturing every single one. The hot lead alerts alone paid for the entire system in the first week." },
-              { name: "Sarah Chen", co: "SunPower Solar Co.", quote: "The AI sounds professional and natural. Our customers don't realize it's automated, and the lead scoring tells us exactly who to call back first." },
-              { name: "James Wilson", co: "Wilson Plumbing", quote: "Setup took 20 minutes. Now I get a text the moment a high-value lead calls, and the appointment is already on my calendar." },
+              { name: "Mike Rodriguez", co: "Rodriguez HVAC", quote: "We used to miss half our calls. Now every one gets answered, scored, and sent to my phone. The hot lead texts alone cover the cost." },
+              { name: "Sarah Chen", co: "SunPower Solar Co.", quote: "Callers don't know it's AI. It sounds sharp, asks the right questions, and the lead scores tell us exactly who to call back first." },
+              { name: "James Wilson", co: "Wilson Plumbing", quote: "Took 20 minutes to set up. Now when a high-value lead calls, I get a text and the appointment is already on my calendar." },
             ].map((t) => (
               <Card key={t.name} className="text-left border border-gray-200 shadow-sm bg-white">
                 <CardContent className="pt-6 pb-6">
@@ -371,20 +371,20 @@ export default function Index() {
       <Section className="py-20 sm:py-28 bg-gray-50 px-4" id="pricing">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">Pricing</p>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Clear pricing. No surprises.</h2>
-          <p className="text-gray-500 mb-12 text-lg">All plans include a 14-day money-back guarantee.</p>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">Pick a plan. Start answering calls today.</h2>
+          <p className="text-gray-500 mb-12 text-lg">14-day money-back guarantee on all plans. No contracts.</p>
           <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
-                name: "Starter", price: "$497", period: "/mo", popular: false, desc: "For single-location contractors getting started.",
+                name: "Starter", price: "$497", period: "/mo", popular: false, desc: "One location. Full coverage. The basics done right.",
                 features: ["1 location", "500 minutes/month", "Lead scoring", "SMS alerts", "Call transcripts", "Email support"],
               },
               {
-                name: "Growth", price: "$997", period: "/mo", popular: true, desc: "For growing teams that need more coverage and tools.",
+                name: "Growth", price: "$997", period: "/mo", popular: true, desc: "Multiple locations. More minutes. Appointment booking included.",
                 features: ["Up to 3 locations", "2,000 minutes/month", "Lead scoring + automation", "Priority SMS & email alerts", "Appointment booking", "Calendar integration", "Priority support"],
               },
               {
-                name: "Agency", price: "Custom", period: "", popular: false, desc: "For agencies managing multiple contractor clients.",
+                name: "Agency", price: "Custom", period: "", popular: false, desc: "Unlimited clients. White-label ready. Built for scale.",
                 features: ["Unlimited locations", "Unlimited minutes", "Multi-tenant portal", "White-label branding", "API access", "Dedicated account manager", "Custom integrations", "SLA guarantee"],
               },
             ].map((tier) => (
@@ -435,11 +435,11 @@ export default function Index() {
           </div>
           <Accordion type="single" collapsible className="space-y-2">
             {[
-              { q: "Does it only answer calls?", a: "It answers calls, qualifies the lead with targeted questions, scores them based on intent, sends your team an instant SMS alert, and books the appointment — all without human intervention." },
-              { q: "Who is it built for?", a: "Home service contractors: HVAC, plumbing, roofing, solar, and general contractors. It's also built for agencies that manage multiple contractor clients from a single dashboard." },
-              { q: "Does it work after hours?", a: "Yes. The AI operates 24/7 — nights, weekends, and holidays. That's when most competitors miss calls and lose leads." },
-              { q: "Will my team still get notified?", a: "Absolutely. Hot leads trigger instant SMS alerts to your team. You also get daily email summaries, and every lead is logged in your real-time dashboard." },
-              { q: "Can it book appointments?", a: "Yes. The AI checks your real-time calendar availability and books the appointment directly. No back-and-forth scheduling needed." },
+              { q: "Does it only answer calls?", a: "No. It answers the call, asks qualifying questions, scores the lead, sends your team an SMS, and books the appointment. All automatic." },
+              { q: "Who is this for?", a: "HVAC, plumbing, roofing, solar, and general contractors. Also built for agencies that manage multiple contractor accounts." },
+              { q: "Does it work nights and weekends?", a: "Yes. It runs 24/7. Nights, weekends, holidays. That's when most of your competitors miss calls." },
+              { q: "Will my team know when someone calls?", a: "Yes. Hot leads trigger an instant text to your team. Every call is also logged in your dashboard with a full transcript." },
+              { q: "Can it actually book appointments?", a: "Yes. It checks your calendar in real time and books the job on the spot. No phone tag. No back-and-forth." },
             ].map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="bg-white rounded-xl border border-gray-200 px-5 shadow-sm">
                 <AccordionTrigger className="text-left font-medium text-gray-900 text-[15px] hover:no-underline">{faq.q}</AccordionTrigger>
@@ -453,8 +453,8 @@ export default function Index() {
       {/* ── Final CTA ── */}
       <Section className="py-20 sm:py-28 px-4 bg-gray-900">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Answer every call. Book more jobs.</h2>
-          <p className="text-gray-400 mb-8 text-lg">Start capturing missed revenue today. No credit card required.</p>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Your phone should never go unanswered again.</h2>
+          <p className="text-gray-400 mb-8 text-lg">Start today. No credit card required. Cancel anytime.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" onClick={() => navigate("/apply")} className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-8 h-12 text-[15px] font-semibold shadow-lg shadow-blue-600/30">
               Start Free Trial <ArrowRight className="h-4 w-4 ml-1.5" />
