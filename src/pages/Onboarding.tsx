@@ -241,7 +241,7 @@ const Onboarding = () => {
           </div>
           <div className="grid gap-3 text-left">
             {actions.map((a) => (
-              <div key={a.label} className="flex items-start gap-4 rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors cursor-pointer">
+              <div key={a.label} onClick={a.onClick} className="flex items-start gap-4 rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors cursor-pointer">
                 <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
                   <a.icon className="w-4 h-4 text-foreground" />
                 </div>
