@@ -146,6 +146,7 @@ const Field = ({ label, hint, error, children }: { label: string; hint?: string;
 // ─── Main component ────────────────────────────────────────
 const Onboarding = () => {
   const navigate = useNavigate();
+  const { enableDemoMode } = useDemoMode();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<OnboardingData>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
