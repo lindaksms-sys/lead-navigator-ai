@@ -35,6 +35,14 @@ export default function AdminAgencies() {
     },
   });
 
+  const { data: billingData } = useQuery({
+    queryKey: ["admin-billing-subs"],
+    queryFn: async () => {
+      const { data } = await supabase.from("billing_subscriptions" as any).select("*");
+      return (data || []) as any[];
+    },
+  });
+
   const { data: userCounts } = useQuery({
     queryKey: ["admin-user-counts"],
     queryFn: async () => {
@@ -122,19 +130,21 @@ export default function AdminAgencies() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-left text-muted-foreground">
-                    <th className="pb-2 font-medium">Agency</th>
-                    <th className="pb-2 font-medium">Plan</th>
-                    <th className="pb-2 font-medium">Status</th>
-                    <th className="pb-2 font-medium">Users</th>
-                    <th className="pb-2 font-medium">Revenue</th>
-                    <th className="pb-2 font-medium">Created</th>
-                    <th className="pb-2 font-medium">Actions</th>
+                     <th className="pb-2 font-medium">Agency</th>
+                     <th className="pb-2 font-medium">Plan</th>
+                     <th className="pb-2 font-medium">Status</th>
+                     <th className="pb-2 font-medium">Billing</th>
+                     <th className="pb-2 font-medium">Users</th>
+                     <th className="pb-2 font-medium">Revenue</th>
+                     <th className="pb-2 font-medium">Created</th>
+                     <th className="pb-2 font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((a: any) => {
-                    const sub = subscriptions?.find((s: any) => s.agency_id === a.id);
-                    const users = userCounts?.[a.id] || 0;
+                     const sub = subscriptions?.find((s: any) => s.agency_id === a.id);
+                     const bill = billingData?.find((b: any) => b.client_id === a.id);
+                     const users = userCounts?.[a.id] || 0;
                     return (
                       <tr key={a.id} className="border-b last:border-0">
                         <td className="py-3 font-medium">{a.name}</td>
@@ -156,8 +166,16 @@ export default function AdminAgencies() {
                             {sub?.status || "no sub"}
                           </Badge>
                         </td>
-                        <td className="py-3">{users}</td>
-                        <td className="py-3">${((sub?.amount || 0) / 100).toLocaleString()}/mo</td>
+                         <td className="py-3">
+                           {bill ? (
+                             <Badge variant={bill.subscription_status === "active" ? "default" : "secondary"}>
+                               {bill.subscription_status} / {bill.payment_provider}
+                             </Badge>
+                           ) : (
+                             <span className="text-xs text-muted-foreground">—</span>
+                           )}
+                         </td>
+                         <td className="py-3">{users}</td>
                         <td className="py-3 text-muted-foreground">{format(new Date(a.created_at), "MMM d, yyyy")}</td>
                         <td className="py-3">
                           <div className="flex gap-1">
